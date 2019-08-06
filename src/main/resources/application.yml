@@ -9,7 +9,7 @@ spring:
   h2:
     console:
       enabled: true
-      path: shop
+      path: /shop
 
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
