@@ -2,9 +2,10 @@ spring:
 
   datasource:
     url: jdbc:h2:file:./shop_h2
-    data-password: daniel
+    username: sa
     password:
     driver-class-name: org.h2.Driver
+
 
   h2:
     console:

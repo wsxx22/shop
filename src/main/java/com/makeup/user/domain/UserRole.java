@@ -6,7 +6,7 @@ import lombok.experimental.FieldDefaults;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user_types")
+@Table(name = "roles")
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)

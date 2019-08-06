@@ -7,13 +7,20 @@ import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@AllArgsConstructor
+//@AllArgsConstructor
 class UserService {
 
     UserMapper userMapper;
     UserRepository userRepository;
     UserFactory userFactory;
     UserValidator userValidator;
+
+    public UserService(UserMapper userMapper, UserRepository userRepository, UserFactory userFactory, UserValidator userValidator) {
+        this.userMapper = userMapper;
+        this.userRepository = userRepository;
+        this.userFactory = userFactory;
+        this.userValidator = userValidator;
+    }
 
     void create (CreateUserDto createUserDto, String role) {
         userValidator.checkInputDto(createUserDto);
