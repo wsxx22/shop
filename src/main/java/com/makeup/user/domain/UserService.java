@@ -7,15 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
-//@AllArgsConstructor
+@AllArgsConstructor
 class UserService {
-
-    public UserService(UserMapper userMapper, UserRepository userRepository, UserFactory userFactory, UserValidator userValidator) {
-        this.userMapper = userMapper;
-        this.userRepository = userRepository;
-        this.userFactory = userFactory;
-        this.userValidator = userValidator;
-    }
 
     UserMapper userMapper;
     UserRepository userRepository;
@@ -26,6 +19,8 @@ class UserService {
         userValidator.checkInputDto(createUserDto);
         userRepository.save(userFactory.create(createUserDto, role));
     }
+
+
 
 
 }
