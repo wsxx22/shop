@@ -1,10 +1,12 @@
 package com.makeup.user.domain;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.Repository;
 
 import java.util.Optional;
 
-interface UserRepository extends JpaRepository<User, Long> {
+interface UserRepository extends Repository<User, Long> {
+
+    void save(User user);
 
     Optional<User> findByLogin (String login);
 

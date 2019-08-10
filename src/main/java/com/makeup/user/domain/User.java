@@ -1,12 +1,12 @@
 package com.makeup.user.domain;
 
+import com.makeup.role.domain.Role;
 import com.makeup.user.domain.passwordValidator.ValidPassword;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -29,15 +29,12 @@ public class User {
     String password;
     String email;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL)
             @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "id_user"),
                                             inverseJoinColumns = @JoinColumn(name = "id_role"))
-    Set<UserRole> userRoles;
+    Set<Role> roles = new HashSet<>();
 
-    public User(String login, String password, String email, Set<UserRole> userRoles) {
-        this.login = login;
-        this.password = password;
-        this.email = email;
-        this.userRoles = userRoles;
+    void addRole(Role role) {
+        roles.add(role);
     }
 }
