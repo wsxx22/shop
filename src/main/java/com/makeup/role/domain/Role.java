@@ -1,4 +1,4 @@
-package com.makeup.user.domain;
+package com.makeup.role.domain;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,11 +8,10 @@ import javax.persistence.*;
 @Entity
 @Table(name = "roles")
 @Getter
-@Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @AllArgsConstructor
-class UserRole {
+public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

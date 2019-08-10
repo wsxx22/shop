@@ -1,5 +1,7 @@
 package com.makeup.user.domain;
 
+import com.makeup.role.domain.RoleFacade;
+import com.makeup.user.domain.passwordValidator.PasswordConstraintValidator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -7,12 +9,17 @@ import org.springframework.context.annotation.Configuration;
 public class UserConfiguration {
 
     @Bean
+    PasswordConstraintValidator passwordConstraintValidator(){
+        return new PasswordConstraintValidator();
+    }
+
+    @Bean
     UserFacade userFacade(UserRepository userRepository,
-                          UserMapper userMapper,
-                          UserRoleRepository userRoleRepository) {
+                          RoleFacade roleFacade) {
         return new UserFacade(
                 new UserService(
-                        userMapper, userRepository,
-                        new UserFactory(userRoleRepository), new UserValidator(userRepository)));
+                        userRepository,
+                        new UserFactory(roleFacade),
+                        new UserValidator(userRepository)));
     }
 }

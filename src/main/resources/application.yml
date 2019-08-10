@@ -1,7 +1,6 @@
 spring:
-
   datasource:
-    url: jdbc:h2:file:./shop_h2
+    url: jdbc:h2:mem:shop_h2
     username: sa
     password:
     driver-class-name: org.h2.Driver
@@ -10,9 +9,8 @@ spring:
   h2:
     console:
       enabled: true
-      path: /shop
+      path: /console
 
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
-    hibernate:
-      ddl-auto: update
+

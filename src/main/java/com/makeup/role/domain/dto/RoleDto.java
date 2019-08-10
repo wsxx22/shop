@@ -1,16 +1,14 @@
-package com.makeup.user.domain.dto;
+package com.makeup.role.domain.dto;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-@Builder
 @Getter
+@Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDto {
+public class RoleDto {
     Long id;
-    String login;
-    String email;
-    String type;
+    String role;
 }

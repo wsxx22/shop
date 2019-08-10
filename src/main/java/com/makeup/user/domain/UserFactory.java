@@ -1,40 +1,32 @@
 package com.makeup.user.domain;
 
+import com.makeup.role.domain.Role;
+import com.makeup.role.domain.RoleFacade;
+import com.makeup.role.domain.dto.RoleDto;
 import com.makeup.user.domain.dto.CreateUserDto;
-import com.makeup.user.domain.exceptions.InvalidUserRoleException.CAUSE;
-import com.makeup.user.domain.exceptions.InvalidUserRoleException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import java.util.Collections;
+import java.util.Set;
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
-//@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@AllArgsConstructor
 class UserFactory {
-    UserRoleRepository userRoleRepository;
-//    UserMapper userMapper;
+    RoleFacade roleFacade;
 
-
-    public UserFactory(UserRoleRepository userRoleRepository) {
-        this.userRoleRepository = userRoleRepository;
+    User create(CreateUserDto createUserDto, String role){
+        return User.builder()
+                .login(createUserDto.getLogin())
+                .password(createUserDto.getPassword())
+                .email(createUserDto.getEmail())
+                .roles(Set.of(getRole(role)))
+                .build();
     }
 
-    User create(CreateUserDto createUserDto, String role) {
-        return new User(
-                createUserDto.getLogin(),
-                createUserDto.getPassword(),
-                createUserDto.getEmail(),
-                Collections.singleton(getRole(role)));
-//       return User.builder()
-//                .login(createUserDto.getLogin())
-//                .password(createUserDto.getPassword())
-//                .email(createUserDto.getEmail())
-//                .userRoles(Collections.singleton(getRole(role)))
-//                .build();
-    }
-
-    private UserRole getRole (String role) {
-        return userRoleRepository.findByRole(role).orElseThrow(() -> new InvalidUserRoleException(CAUSE.ROLE_NOT_FOUND));
+    private Role getRole (String roleName){
+        RoleDto roleDto = roleFacade.findRole(roleName);
+        return new Role(roleDto.getId(), roleDto.getRole());
     }
 }

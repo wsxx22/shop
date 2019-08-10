@@ -5,7 +5,7 @@ import org.passay.*;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-class PasswordConstraintValidator implements ConstraintValidator<ValidPassword, String> {
+public class PasswordConstraintValidator implements ConstraintValidator<ValidPassword, String> {
 
     @Override
     public boolean isValid(String password, ConstraintValidatorContext context) {
