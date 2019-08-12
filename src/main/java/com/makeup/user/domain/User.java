@@ -1,7 +1,6 @@
 package com.makeup.user.domain;
 
 import com.makeup.role.domain.Role;
-import com.makeup.user.domain.passwordValidator.ValidPassword;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -12,7 +11,6 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 @Getter
-@Setter
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -25,16 +23,28 @@ public class User {
 
     String login;
 
-    @ValidPassword
     String password;
+
     String email;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @Getter(value = AccessLevel.NONE)
+    @ManyToMany(fetch = FetchType.EAGER)
             @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "id_user"),
                                             inverseJoinColumns = @JoinColumn(name = "id_role"))
-    Set<Role> roles = new HashSet<>();
+    Set<Role> roles;
 
-    void addRole(Role role) {
+    public User(String login, String password, String email) {
+        this.login = login;
+        this.password = password;
+        this.email = email;
+        this.roles = new HashSet<>();
+    }
+
+    void addRole(Role role){
         roles.add(role);
+    }
+
+    Set<Role> getRoles() {
+        return new HashSet<>(roles);
     }
 }

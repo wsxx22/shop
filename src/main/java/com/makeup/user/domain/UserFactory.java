@@ -8,25 +8,25 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Collections;
-import java.util.Set;
-
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @AllArgsConstructor
 class UserFactory {
     RoleFacade roleFacade;
 
-    User create(CreateUserDto createUserDto, String role){
-        return User.builder()
-                .login(createUserDto.getLogin())
-                .password(createUserDto.getPassword())
-                .email(createUserDto.getEmail())
-                .roles(Set.of(getRole(role)))
-                .build();
+    User create(CreateUserDto createUserDto, String roleName){
+        User user = new User(createUserDto.getLogin(), createUserDto.getPassword(), createUserDto.getEmail());
+        assignUserToRole(user, roleName);
+        return user;
     }
 
     private Role getRole (String roleName){
         RoleDto roleDto = roleFacade.findRole(roleName);
         return new Role(roleDto.getId(), roleDto.getRole());
+    }
+
+    private void assignUserToRole(User user, String roleName) {
+        Role role = getRole(roleName);
+        role.addUser(user);
+        user.addRole(role);
     }
 }

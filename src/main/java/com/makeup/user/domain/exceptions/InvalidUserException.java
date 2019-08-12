@@ -14,7 +14,9 @@ public class InvalidUserException extends ParameterizedException {
         LOGIN_LENGTH("Login must have a minimum 5 characters"),
         LOGIN_EXISTS("Login exists. Change it"),
         EMAIL_INCORRECT("Invalid email. Correct it"),
-        EMAIL_EXISTS("Email exists. Change it");
+        EMAIL_EXISTS("Email exists. Change it"),
+        EMAIL_BLANK("Email cannot be blank"),
+        CORRECT_LOGIN_OR_PASSWORD("Login or password is incorrect. Correct it");
 
         String message;
     }

@@ -1,4 +1,4 @@
-package com.makeup.shared;
+package com.makeup.utils;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

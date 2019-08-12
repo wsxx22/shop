@@ -1,18 +1,24 @@
 package com.makeup.user.domain;
 
+import com.makeup.utils.GlobalAuthorization;
 import com.makeup.user.domain.dto.CreateUserDto;
 import com.makeup.user.domain.exceptions.InvalidUserException;
 
+import com.makeup.utils.ParameterizedException;
+import com.vaadin.data.BeanValidationBinder;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.TextField;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.regex.Matcher;
+import javax.validation.Valid;
 import java.util.regex.Pattern;
 
 import static com.makeup.user.domain.exceptions.InvalidUserException.CAUSE.*;
+import static com.vaadin.ui.Notification.Type.ERROR_MESSAGE;
 
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -20,7 +26,7 @@ import static com.makeup.user.domain.exceptions.InvalidUserException.CAUSE.*;
 class UserValidator {
     UserRepository userRepository;
 
-    void checkInputDto(CreateUserDto createUserDto){
+    boolean checkInputDto(CreateUserDto createUserDto){
         String login = createUserDto.getLogin();
 
         checkValueIfBlank(login, new InvalidUserException(LOGIN_BLANK));
@@ -31,10 +37,38 @@ class UserValidator {
         });
 
         validateEmail(createUserDto.getEmail());
+        return enablePasswordValidator(createUserDto);
+    }
+
+    void authorizeUser(String login, String password){
+        userRepository.findByLoginAndPassword(login, password)
+                .ifPresentOrElse(user -> {
+                            GlobalAuthorization.name = user.getLogin();
+                        },
+                        () -> throwException(new InvalidUserException(CORRECT_LOGIN_OR_PASSWORD)));
+//                .orElseThrow(() -> new InvalidUserException(CORRECT_LOGIN_OR_PASSWORD));
+    }
+
+//    private void checkInputName(String name){
+//        userRepository.findByLogin(name).ifPresentOrElse();
+//    }
+
+    private boolean enablePasswordValidator(@Valid CreateUserDto createUserDto) {
+        BeanValidationBinder<CreateUserDto> binder = new BeanValidationBinder<>(CreateUserDto.class);
+        TextField passwordField = new TextField();
+        passwordField.setValue(createUserDto.getPassword());
+        binder.forField(passwordField).bind("password");
+
+        binder.setBean(createUserDto);
+
+        if (!binder.isValid()){
+            Notification.show(ParameterizedException.exception, ERROR_MESSAGE).setDelayMsec(2000);
+        }
+        return binder.isValid();
     }
 
     private void validateEmail(String email){
-        checkValueIfBlank(email, new InvalidUserException(LOGIN_BLANK));
+        checkValueIfBlank(email, new InvalidUserException(EMAIL_BLANK));
         checkEmailByRegExp(email);
         userRepository.findByEmail(email).ifPresent(user -> {
             log.error(EMAIL_EXISTS.getMessage());
@@ -53,7 +87,7 @@ class UserValidator {
     }
 
     private void checkEmailByRegExp(String email){
-        Pattern pattern = Pattern.compile("^[a-zA-Z0-9.]+@[a-zA-Z0-9]+.+[a-zA-Z0-9.]+.{0}$", Pattern.CASE_INSENSITIVE);
+        Pattern pattern = Pattern.compile("[a-zA-Z0-9]+[a-zA-Z0-9.]+@[a-zA-Z0-9]+.+[a-zA-Z0-9.]+[a-zA-Z0-9]+", Pattern.CASE_INSENSITIVE);
 
        if (!pattern.matcher(email).matches()){
             log.error(EMAIL_INCORRECT.getMessage());

@@ -12,9 +12,8 @@ import com.vaadin.ui.*;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 
-import java.util.stream.Stream;
-
-import static com.makeup.shared.Constant.User.USER_ROLE;
+import static com.makeup.utils.Constant.User.USER_ROLE;
+import static com.vaadin.ui.Notification.Type.ERROR_MESSAGE;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @SpringView(name = "register-account")
@@ -52,38 +51,34 @@ public class RegisterAccountView extends Composite implements View {
         TextField loginField = new TextField("Login:");
         TextField emailField = new TextField("Email:");
         PasswordField passwordField = new PasswordField("Password:");
-        PasswordField repeatPasswordField = new PasswordField("Repeat password:");
 
         Button createAccountButton = new Button("Create", VaadinIcons.ENTER);
         Button returnButton = new Button("Return", VaadinIcons.EXIT);
 
-        createAccountButton.addClickListener(click -> {userFacade.create(
-//                new CreateUserDto("andrzej", "test@wp.pl", "Pozdro123@")
-                CreateUserDto.builder()
-                                    .login(loginField.getValue())
-                                    .email(emailField.getValue())
-                                    .password(repeatPasswordField.getValue())
-                                    .build()
-                            ,roleFacade.findRole(USER_ROLE).getRole());
-            Notification.show("Logged Succesfull!");
-                });
-//        roleFacade.findRole(USER_ROLE).getRole()
-//        VaadinSession.getCurrent().setErrorHandler(errorEvent ->
-//                Notification.show("test1", Notification.Type.ERROR_MESSAGE));
+        createAccountButton.addClickListener(click -> {
+            CreateUserDto createUserDto = new CreateUserDto(loginField.getValue(), emailField.getValue(), passwordField.getValue());
+            String role = roleFacade.findRole(USER_ROLE).getRole();
+            if (userFacade.create(createUserDto, role)){
+                Notification.show("Registered successfully!").setDelayMsec(1500);
+                navigateToHomepage();
+            } });
 
-        setFullSizeTextFields(loginField, emailField, passwordField, repeatPasswordField);
-        setSizeButtons(createAccountButton, returnButton);
+        returnButton.addClickListener(click -> navigateToHomepage());
+
+        VaadinSession.getCurrent().setErrorHandler(errorEvent ->
+                Notification.show(ParameterizedException.exception, ERROR_MESSAGE).setDelayMsec(2000));
+
+        SettingsLayout.setFullSizeTextFields(loginField, emailField, passwordField);
+        SettingsLayout.setSizeButtons(createAccountButton, returnButton);
 
         buttonsLayout.addComponents(createAccountButton, returnButton);
-        registerLayout.addComponents(loginField,emailField, passwordField, repeatPasswordField, buttonsLayout);
+        registerLayout.addComponents(loginField,emailField, passwordField, buttonsLayout);
         root.addComponent(registerLayout);
     }
 
-    private void setSizeButtons(Button... buttons){
-        Stream.of(buttons).forEach(button -> button.setWidth("150"));
+    private void navigateToHomepage(){
+        getUI().getNavigator().navigateTo("homepage");
     }
 
-    private void setFullSizeTextFields(TextField... textFields){
-        Stream.of(textFields).forEach(AbstractComponent::setSizeFull);
-    }
+
 }
