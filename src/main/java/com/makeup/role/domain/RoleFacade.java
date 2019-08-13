@@ -1,6 +1,6 @@
 package com.makeup.role.domain;
 
-import com.makeup.role.domain.dto.RoleDto;
+import com.makeup.role.domain.dto.CreateRoleDto;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -14,11 +14,11 @@ import java.util.Set;
 public class RoleFacade {
     RoleService roleService;
 
-    public RoleDto findRole(String role){
+    public CreateRoleDto findRole(String role){
         return roleService.findRole(role);
     }
 
-    public Set<RoleDto> findRoles(){
+    public Set<CreateRoleDto> findRoles(){
         return roleService.findRoles();
     }
 }

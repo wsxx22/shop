@@ -1,12 +1,11 @@
-package com.makeup.role.domain;
+package com.makeup.role.domain.query;
 
 import com.makeup.user.domain.query.UserQueryDto;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -14,12 +13,11 @@ import java.util.Set;
 
 @Entity
 @Table(name = "roles")
-@DynamicInsert
-@DynamicUpdate
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-class Role {
+@NoArgsConstructor
+@AllArgsConstructor
+public class RoleQueryDto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,11 +28,11 @@ class Role {
     @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL)
     Set<UserQueryDto> users;
 
-    void addUser(UserQueryDto userQueryDto){
-        users.add(userQueryDto);
+    public void addUser(UserQueryDto user){
+        users.add(user);
     }
 
-    Role(Long id, String role) {
+    public RoleQueryDto(Long id, String role) {
         this.id = id;
         this.role = role;
         this.users = new HashSet<>();

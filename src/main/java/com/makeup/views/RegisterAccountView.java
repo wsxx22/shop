@@ -11,6 +11,7 @@ import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
+import org.mindrot.jbcrypt.BCrypt;
 
 import static com.makeup.utils.Constant.User.USER_ROLE;
 import static com.vaadin.ui.Notification.Type.ERROR_MESSAGE;
@@ -51,6 +52,7 @@ public class RegisterAccountView extends Composite implements View {
         TextField loginField = new TextField("Login:");
         TextField emailField = new TextField("Email:");
         PasswordField passwordField = new PasswordField("Password:");
+
 
         Button createAccountButton = new Button("Create", VaadinIcons.ENTER);
         Button returnButton = new Button("Return", VaadinIcons.EXIT);

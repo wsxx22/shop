@@ -1,6 +1,6 @@
 package com.makeup.role.domain;
 
-import com.makeup.role.domain.dto.RoleDto;
+import com.makeup.role.domain.dto.CreateRoleDto;
 import com.makeup.role.domain.exception.InvalidRoleException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -16,12 +16,12 @@ class RoleService {
     RoleRepository roleRepository;
     RoleMapperImpl roleMapper;
 
-    RoleDto findRole (String role){
+    CreateRoleDto findRole (String role){
         return roleMapper.toDto(roleRepository.findByRole(role)
                 .orElseThrow(() -> new InvalidRoleException(ROLE_NOT_FOUND)));
     }
 
-    Set<RoleDto> findRoles(){
+    Set<CreateRoleDto> findRoles(){
         return roleMapper.toDtoSet(roleRepository.findAll());
     }
 }

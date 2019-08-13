@@ -54,10 +54,10 @@ public class SignInView extends Composite implements View {
         signInButton.addClickListener(clickEvent -> {
             userFacade.login(loginField.getValue(), passwordField.getValue());
             Notification.show("Logged in successfully", HUMANIZED_MESSAGE);
-            getUI().getNavigator().navigateTo("homepage");
+            navigateTo("user-profile");
         });
 
-        returnButton.addClickListener(clickEvent -> getUI().getNavigator().navigateTo("homepage"));
+        returnButton.addClickListener(clickEvent -> navigateTo("homepage"));
 
         VaadinSession.getCurrent().setErrorHandler(errorEvent ->
                 Notification.show(ParameterizedException.exception, ERROR_MESSAGE));
@@ -66,5 +66,9 @@ public class SignInView extends Composite implements View {
         buttonsLayout.addComponents(signInButton,returnButton);
         menuLayout.addComponents(loginField, passwordField, buttonsLayout);
         root.addComponent(menuLayout);
+    }
+
+    private void navigateTo(String view){
+        getUI().getNavigator().navigateTo(view);
     }
 }

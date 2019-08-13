@@ -1,0 +1,1 @@
+insert into user_roles(id_user, id_role) values (1,1); //admin000

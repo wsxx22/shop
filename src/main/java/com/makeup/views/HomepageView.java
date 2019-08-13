@@ -5,11 +5,12 @@ import com.makeup.user.domain.UserFacade;
 import com.makeup.utils.GlobalAuthorization;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
-import com.vaadin.server.Page;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
+
+import static com.makeup.utils.Constant.User.*;
 
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -46,14 +47,37 @@ public class HomepageView extends Composite implements View {
 
     private void checkAuthorize(){
         if (GlobalAuthorization.isAuthorized()) {
-            authorizedUserLayout();
+            checkRole();
         } else {
             unauthorizedLayout();
         }
     }
 
-    private void checkTypeUser(){
+    private void checkRole(){
+        adminRole();
+        cashierRole();
+        userRole();
+    }
 
+    private void adminRole() {
+        GlobalAuthorization.getUserRoles().stream()
+                .filter(role -> role.equals(ADMIN_ROLE))
+                .findAny()
+                .ifPresent(role -> navigateTo("owner-profile"));
+    }
+
+    private void cashierRole() {
+        GlobalAuthorization.getUserRoles().stream()
+                .filter(role -> role.equals(CASHIER_ROLE))
+                .findAny()
+                .ifPresent(role -> navigateTo("cashier-profile"));
+    }
+
+    private void userRole() {
+        GlobalAuthorization.getUserRoles().stream()
+                .filter(role -> role.equals(USER_ROLE))
+                .findAny()
+                .ifPresent(role -> navigateTo("user-profile"));
     }
 
     private void unauthorizedLayout(){
@@ -70,23 +94,7 @@ public class HomepageView extends Composite implements View {
         root.addComponent(menuLayout);
     }
 
-    private void authorizedUserLayout(){
-        Button productsButton = new Button("View products in the store", VaadinIcons.SHOP);
-        Button historyOrderButton = new Button("History order", VaadinIcons.LIST);
-        Button settingsButton = new Button("Change settings", VaadinIcons.LIST);
-        Button logoutButton = new Button("Logout", VaadinIcons.SIGN_OUT);
-
-        logoutButton.addClickListener(clickEvent -> {
-            userFacade.logout();
-            Page.getCurrent().reload();
-        });
-
-        SettingsLayout.setSizeFullButtons(productsButton, historyOrderButton, settingsButton, logoutButton);
-        menuLayout.addComponents(productsButton, historyOrderButton, settingsButton, logoutButton);
-        root.addComponent(menuLayout);
+    private void navigateTo(String navigateLayout){
+        getUI().getNavigator().navigateTo(navigateLayout);
     }
-
-
-
-
 }

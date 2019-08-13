@@ -1,5 +1,6 @@
 package com.makeup.user.domain;
 
+import com.makeup.role.domain.query.RoleQueryDto;
 import com.makeup.utils.GlobalAuthorization;
 import com.makeup.user.domain.dto.CreateUserDto;
 import com.makeup.user.domain.exceptions.InvalidUserException;
@@ -13,9 +14,12 @@ import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.mindrot.jbcrypt.BCrypt;
 
 import javax.validation.Valid;
+import java.util.Set;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static com.makeup.user.domain.exceptions.InvalidUserException.CAUSE.*;
 import static com.vaadin.ui.Notification.Type.ERROR_MESSAGE;
@@ -25,6 +29,7 @@ import static com.vaadin.ui.Notification.Type.ERROR_MESSAGE;
 @AllArgsConstructor
 class UserValidator {
     UserRepository userRepository;
+//    UserMapper userMapper;
 
     boolean checkInputDto(CreateUserDto createUserDto){
         String login = createUserDto.getLogin();
@@ -41,17 +46,17 @@ class UserValidator {
     }
 
     void authorizeUser(String login, String password){
-        userRepository.findByLoginAndPassword(login, password)
+        userRepository.findByLogin(login)
+                .filter(user -> BCrypt.checkpw(password, user.getPassword()))
                 .ifPresentOrElse(user -> {
                             GlobalAuthorization.name = user.getLogin();
+                            GlobalAuthorization.assignRolesToAuthorizationUser(getRoleNameFromUser(user));
                         },
-                        () -> throwException(new InvalidUserException(CORRECT_LOGIN_OR_PASSWORD)));
-//                .orElseThrow(() -> new InvalidUserException(CORRECT_LOGIN_OR_PASSWORD));
+                        () -> {
+                            log.info(String.format(FAILED_LOGIN_ATTEMPT.getMessage(), login));
+                            throwException(new InvalidUserException(CORRECT_LOGIN_OR_PASSWORD));
+                        });
     }
-
-//    private void checkInputName(String name){
-//        userRepository.findByLogin(name).ifPresentOrElse();
-//    }
 
     private boolean enablePasswordValidator(@Valid CreateUserDto createUserDto) {
         BeanValidationBinder<CreateUserDto> binder = new BeanValidationBinder<>(CreateUserDto.class);
@@ -64,6 +69,8 @@ class UserValidator {
         if (!binder.isValid()){
             Notification.show(ParameterizedException.exception, ERROR_MESSAGE).setDelayMsec(2000);
         }
+        String hashPassword = BCrypt.hashpw(passwordField.getValue(), BCrypt.gensalt(10));
+        createUserDto.setPassword(hashPassword);
         return binder.isValid();
     }
 
@@ -95,8 +102,13 @@ class UserValidator {
         }
     }
 
+    private Set<String> getRoleNameFromUser(User user){
+        return user.getRoles().stream()
+                .map(RoleQueryDto::getRole)
+                .collect(Collectors.toSet());
+    }
+
     private void throwException(RuntimeException exception){
-        log.error(exception.getMessage());
         throw exception;
     }
 }

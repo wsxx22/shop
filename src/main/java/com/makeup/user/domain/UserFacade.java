@@ -14,15 +14,20 @@ import javax.transaction.Transactional;
 public class UserFacade {
     UserService userService;
 
-    public boolean create (CreateUserDto createUserDto, String role) {
+    public boolean create(CreateUserDto createUserDto, String role) {
         return userService.create(createUserDto, role);
     }
 
-    public void login (String username, String password) {
+    public void login(String username, String password) {
         userService.login(username, password);
     }
 
     public void logout(){
         GlobalAuthorization.name = null;
+        GlobalAuthorization.removeUserRoles();
+    }
+
+    public void changePassword(String password){
+        userService.changePassword(password);
     }
 }

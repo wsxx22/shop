@@ -16,7 +16,8 @@ public class InvalidUserException extends ParameterizedException {
         EMAIL_INCORRECT("Invalid email. Correct it"),
         EMAIL_EXISTS("Email exists. Change it"),
         EMAIL_BLANK("Email cannot be blank"),
-        CORRECT_LOGIN_OR_PASSWORD("Login or password is incorrect. Correct it");
+        CORRECT_LOGIN_OR_PASSWORD("Login or password is incorrect. Correct it"),
+        FAILED_LOGIN_ATTEMPT("Failed login attempt. Username: %s");
 
         String message;
     }
