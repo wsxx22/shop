@@ -24,19 +24,20 @@ class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+
     String role;
 
     @Getter(AccessLevel.NONE)
     @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL)
     Set<UserQueryDto> users;
 
-    void addUser(UserQueryDto userQueryDto){
-        users.add(userQueryDto);
-    }
-
-    Role(Long id, String role) {
-        this.id = id;
-        this.role = role;
-        this.users = new HashSet<>();
-    }
+//    void addUser(UserQueryDto userQueryDto){
+//        users.add(userQueryDto);
+//    }
+//
+//    Role(Long id, String role) {
+//        this.id = id;
+//        this.role = role;
+//        this.users = new HashSet<>();
+//    }
 }

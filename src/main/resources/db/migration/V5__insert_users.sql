@@ -1,1 +1,2 @@
 insert into users(login, password, email)values ('admin', '$2a$10$JUjsNmf9tXKM/l2/p8lR/uWPeV0W6ejR7JgQ7Frt1cOwf2xihnP.O', 'admin@gmail.com');
+insert into users(login, password, email)values ('user', '$2a$10$msnVYXXlXX/4jxSpYa948OMvH8CGh.CcB11zM666wrSmXS4MgWRNS', 'user@gmail.com');

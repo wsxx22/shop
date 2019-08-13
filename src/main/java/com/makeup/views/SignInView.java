@@ -4,6 +4,7 @@ import com.makeup.user.domain.UserFacade;
 import com.makeup.utils.ParameterizedException;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
+import com.vaadin.server.Page;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
@@ -53,14 +54,16 @@ public class SignInView extends Composite implements View {
 
         signInButton.addClickListener(clickEvent -> {
             userFacade.login(loginField.getValue(), passwordField.getValue());
+
             Notification.show("Logged in successfully", HUMANIZED_MESSAGE);
-            navigateTo("user-profile");
+            getUI().getNavigator().navigateTo("homepage");
+//            navigateTo("homepage");
         });
 
-        returnButton.addClickListener(clickEvent -> navigateTo("homepage"));
+        returnButton.addClickListener(clickEvent -> getUI().getNavigator().navigateTo("homepage"));
 
-        VaadinSession.getCurrent().setErrorHandler(errorEvent ->
-                Notification.show(ParameterizedException.exception, ERROR_MESSAGE));
+//        VaadinSession.getCurrent().setErrorHandler(errorEvent ->
+//                Notification.show(ParameterizedException.exception, ERROR_MESSAGE));
 
         SettingsLayout.setFullSizeTextFields(loginField, passwordField);
         buttonsLayout.addComponents(signInButton,returnButton);
