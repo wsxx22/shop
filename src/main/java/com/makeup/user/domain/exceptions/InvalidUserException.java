@@ -11,7 +11,8 @@ public class InvalidUserException extends ParameterizedException {
     public enum CAUSE {
         USER_NOT_FOUND("User not found"),
         LOGIN_BLANK("Login cannot be blank"),
-        LOGIN_LENGTH("Login must have a minimum 5 characters"),
+        LOGIN_MIN_LENGTH("Login must have a minimum 5 characters"),
+        LOGIN_MAX_LENGTH("Login must have a maximum 15 characters"),
         LOGIN_EXISTS("Login exists. Change it"),
         EMAIL_INCORRECT("Invalid email. Correct it"),
         EMAIL_EXISTS("Email exists. Change it"),

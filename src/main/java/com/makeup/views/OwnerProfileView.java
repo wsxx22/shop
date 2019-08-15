@@ -2,12 +2,11 @@ package com.makeup.views;
 
 import com.makeup.role.domain.RoleFacade;
 import com.makeup.user.domain.UserFacade;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Composite;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 
@@ -23,10 +22,6 @@ public class OwnerProfileView extends Composite implements View {
     public OwnerProfileView(RoleFacade roleFacade, UserFacade userFacade) {
         this.roleFacade = roleFacade;
         this.userFacade = userFacade;
-
-        setupLayout();
-        header();
-        authorizedUserLayout();
     }
 
     private void setupLayout(){
@@ -47,6 +42,25 @@ public class OwnerProfileView extends Composite implements View {
 
     private void authorizedUserLayout(){
 
+        Button logoutButton = new Button("Logout", VaadinIcons.SIGN_OUT);
+
+        logoutButton.addClickListener(clickEvent -> {
+            userFacade.logout();
+            navigateTo("homepage");
+        });
+
+        menuLayout.addComponents(logoutButton);
         root.addComponents(menuLayout);
+    }
+
+    private void navigateTo(String view){
+        getUI().getNavigator().navigateTo(view);
+    }
+
+    @Override
+    public void enter(ViewChangeListener.ViewChangeEvent event) {
+        setupLayout();
+        header();
+        authorizedUserLayout();
     }
 }

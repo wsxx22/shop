@@ -12,4 +12,11 @@ public class Constant {
         public static final String ADMIN_ROLE = "ADMIN";
         public static final String CASHIER_ROLE = "CASHIER";
     }
+
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static final class Label {
+        public static final String STORE_NAME = "MakeUp Shop";
+        public static final String WELCOME_USER =
+                String.format("Hello %s! This is your profile! Have a nice shopping!", GlobalAuthorization.name);
+    }
 }

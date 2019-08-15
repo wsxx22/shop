@@ -4,9 +4,13 @@ import com.makeup.user.domain.UserFacade;
 import com.makeup.utils.ParameterizedException;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.Page;
+import com.vaadin.server.UICreateEvent;
+import com.vaadin.server.UIProvider;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -24,9 +28,6 @@ public class SignInView extends Composite implements View {
 
     public SignInView(UserFacade userFacade){
         this.userFacade = userFacade;
-        setup();
-        header();
-        signIn();
     }
 
     private void setup(){
@@ -54,9 +55,9 @@ public class SignInView extends Composite implements View {
 
         signInButton.addClickListener(clickEvent -> {
             userFacade.login(loginField.getValue(), passwordField.getValue());
-
             Notification.show("Logged in successfully", HUMANIZED_MESSAGE);
-            getUI().getNavigator().navigateTo("homepage");
+            navigateTo("homepage");
+//            getUI().getNavigator().navigateTo("homepage");
 //            navigateTo("homepage");
         });
 
@@ -73,5 +74,12 @@ public class SignInView extends Composite implements View {
 
     private void navigateTo(String view){
         getUI().getNavigator().navigateTo(view);
+    }
+
+    @Override
+    public void enter(ViewChangeListener.ViewChangeEvent event) {
+        setup();
+        header();
+        signIn();
     }
 }

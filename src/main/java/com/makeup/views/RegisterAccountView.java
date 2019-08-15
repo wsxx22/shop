@@ -6,6 +6,7 @@ import com.makeup.user.domain.dto.CreateUserDto;
 import com.makeup.utils.ParameterizedException;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
@@ -27,9 +28,7 @@ public class RegisterAccountView extends Composite implements View {
     public RegisterAccountView(UserFacade userFacade, RoleFacade roleFacade) {
         this.userFacade = userFacade;
         this.roleFacade = roleFacade;
-        setup();
-        header();
-        register();
+
     }
 
     private void setup(){
@@ -67,8 +66,8 @@ public class RegisterAccountView extends Composite implements View {
 
         returnButton.addClickListener(click -> navigateToHomepage());
 
-        VaadinSession.getCurrent().setErrorHandler(errorEvent ->
-                Notification.show(ParameterizedException.exception, ERROR_MESSAGE).setDelayMsec(2000));
+//        VaadinSession.getCurrent().setErrorHandler(errorEvent ->
+//                Notification.show(ParameterizedException.exception, ERROR_MESSAGE).setDelayMsec(2000));
 
         SettingsLayout.setFullSizeTextFields(loginField, emailField, passwordField);
         SettingsLayout.setSizeButtons(createAccountButton, returnButton);
@@ -83,4 +82,10 @@ public class RegisterAccountView extends Composite implements View {
     }
 
 
+    @Override
+    public void enter(ViewChangeListener.ViewChangeEvent event) {
+        setup();
+        header();
+        register();
+    }
 }

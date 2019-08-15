@@ -5,8 +5,10 @@ import com.makeup.user.domain.passwordValidator.PasswordConstraintValidator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.concurrent.ConcurrentHashMap;
+
 @Configuration
-public class UserConfiguration {
+class UserConfiguration {
 
     @Bean
     PasswordConstraintValidator passwordConstraintValidator(){
@@ -20,6 +22,27 @@ public class UserConfiguration {
                 new UserService(
                         userRepository,
                         new UserFactory(roleFacade),
+                        new UserValidator(userRepository)));
+    }
+
+
+    UserFacade userFacade(ConcurrentHashMap<String, User> db) {
+        MemoryUserRepository userRepository = new MemoryUserRepository(db);
+
+        return new UserFacade(
+                new UserService(
+                        userRepository,
+                        new UserFactory(null),
+                        new UserValidator(userRepository)));
+    }
+
+    UserFacade userFacade(ConcurrentHashMap<String, User> db, UserFactory userFactory) {
+        MemoryUserRepository userRepository = new MemoryUserRepository(db);
+
+        return new UserFacade(
+                new UserService(
+                        userRepository,
+                        userFactory,
                         new UserValidator(userRepository)));
     }
 }
