@@ -1,6 +1,5 @@
 package com.makeup.user.domain
 
-
 import com.makeup.user.domain.dto.CreateUserDto
 import com.makeup.user.domain.exceptions.InvalidUserException
 import com.makeup.user.domain.exceptions.PasswordConstraintException
@@ -16,7 +15,7 @@ import spock.lang.Unroll
 import java.util.concurrent.ConcurrentHashMap
 
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-class UserSpec extends Specification{
+class UserFacadeSpec extends Specification{
 
     @Shared
     UserFacade userFacade
@@ -30,6 +29,8 @@ class UserSpec extends Specification{
 
     def cleanup() {
         db.clear()
+        if (GlobalAuthorization.authorized)
+            userFacade.logout()
     }
 
     def 'should create account'(){
@@ -166,6 +167,7 @@ class UserSpec extends Specification{
         GlobalAuthorization.name == 'janek'
     }
 
+    @Unroll
     def 'should not login when username or password are incorrect. #username | #password'(String username, String password){
         given:
         def createUserDto = CreateUserDto.builder()
@@ -181,13 +183,34 @@ class UserSpec extends Specification{
         then:
         InvalidUserException exception = thrown()
         exception.getMessage() == InvalidUserException.CAUSE.CORRECT_LOGIN_OR_PASSWORD.getMessage()
+        println GlobalAuthorization.name
         !GlobalAuthorization.isAuthorized()
         GlobalAuthorization.name == null
+
 
         where:
         username    | password
         'janek'     | 'Password'
         'janek22'   | 'Password123@'
         'janek22'   | 'Password'
+        'janek'   | 'Password123'
+    }
+
+    def 'should logout'(){
+        given:
+        def createUserDto = CreateUserDto.builder()
+                .login('janek')
+                .email('janek@wp.pl')
+                .password('Password123@').build()
+        def role = 'USER'
+
+        when:
+        userFacade.create(createUserDto, role)
+        userFacade.login('janek', 'Password123@')
+        userFacade.logout()
+
+        then:
+        !GlobalAuthorization.isAuthorized()
+        GlobalAuthorization.name == null
     }
 }
