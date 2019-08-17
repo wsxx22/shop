@@ -37,13 +37,10 @@ class UserValidator {
         checkValueIfBlank(login, new InvalidUserException(LOGIN_BLANK));
         checkLoginLength(login);
         userRepository.findByLogin(login).ifPresent(user -> {
-            log.error(LOGIN_EXISTS.getMessage());
             throw new InvalidUserException(LOGIN_EXISTS);
         });
 
         validateEmail(createUserDto.getEmail());
-//        String hashedPassword = isValidPassword(createUserDto);
-//        createUserDto.setPassword(hashedPassword);
         return isValidPassword(createUserDto);
     }
 
@@ -74,19 +71,16 @@ class UserValidator {
         }
         createUserDto.setPassword(getHashedPassword(createUserDto.getPassword()));
         return binder.isValid();
-
-//        return BCrypt.hashpw(passwordField.getValue(), BCrypt.gensalt(10));
     }
 
     private String getHashedPassword(String password){
         return BCrypt.hashpw(password, BCrypt.gensalt(10));
     }
 
-    private void validateEmail(String email){
+    void validateEmail(String email){
         checkValueIfBlank(email, new InvalidUserException(EMAIL_BLANK));
         checkEmailByRegExp(email);
         userRepository.findByEmail(email).ifPresent(user -> {
-            log.error(EMAIL_EXISTS.getMessage());
             throw new InvalidUserException(EMAIL_EXISTS);
         });
     }
@@ -107,7 +101,6 @@ class UserValidator {
         Pattern pattern = Pattern.compile("[a-zA-Z0-9]+[a-zA-Z0-9.]+@[a-zA-Z0-9]+.+[a-zA-Z0-9.]+[a-zA-Z0-9]+", Pattern.CASE_INSENSITIVE);
 
        if (!pattern.matcher(email).matches()){
-            log.error(EMAIL_INCORRECT.getMessage());
             throw new InvalidUserException(EMAIL_INCORRECT);
         }
     }

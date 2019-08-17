@@ -35,6 +35,17 @@ class UserService {
         });
     }
 
+    void changeEmail(String email){
+        String username = GlobalAuthorization.name;
+        userRepository.findByLogin(username).ifPresent(u -> {
+            CreateUserDto createUserDto = CreateUserDto.builder().email(email).build();
+            userValidator.validateEmail(createUserDto.getEmail());
+                u.changeEmail(createUserDto.getEmail());
+                log.info(username + " changed email. ");
+
+        });
+    }
+
     void login(String name, String password){
         userValidator.authorizeUser(name, password);
     }

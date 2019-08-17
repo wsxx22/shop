@@ -37,27 +37,14 @@ class User {
                                             inverseJoinColumns = @JoinColumn(name = "id_role"))
     Set<RoleQueryDto> roles;
 
-//    User(String login, String password, String email) {
-//        this.login = login;
-//        this.password = password;
-//        this.email = email;
-//        this.roles = new HashSet<>();
-//    }
-
-//    void addRole(RoleQueryDto role){
-//        roles.add(role);
-//    }
-//
     Set<RoleQueryDto> getRoles() {
         return new HashSet<>(roles);
     }
-//
     void changePassword(String password){
         this.password = password;
     }
 
-//    @Override
-//    public UserQueryDto entityToQueryDto() {
-//        return null;
-//    }
+    void changeEmail(String email){
+        this.email = email;
+    }
 }

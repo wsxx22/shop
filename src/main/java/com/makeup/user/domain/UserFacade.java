@@ -30,4 +30,8 @@ public class UserFacade {
     public void changePassword(String password){
         userService.changePassword(password);
     }
+
+    public void changeEmail(String email){
+        userService.changeEmail(email);
+    }
 }
