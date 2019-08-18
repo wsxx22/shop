@@ -11,13 +11,12 @@ import static com.makeup.product.domain.exception.InvalidProductException.CAUSE.
 
 @Slf4j
 public class ProductMapperImpl implements ProductMapper {
-
     @Override
     public ProductDto toDto(Product product) {
         Stream.of(product)
-                .filter(Objects::isNull)
+                .filter(Objects::nonNull)
                 .findFirst()
-                .ifPresent(p -> {
+                .orElseThrow(() -> {
                     log.error(CANT_CONVERT_TO_DTO.getMessage());
                     throw new InvalidProductException(CANT_CONVERT_TO_DTO);
                 });
@@ -26,7 +25,7 @@ public class ProductMapperImpl implements ProductMapper {
                 .id(product.getId())
                 .name(product.getName())
                 .description(product.getDescription())
-                .amount(product.getAmount())
+                .capacity(product.getCapacity())
                 .price(product.getPrice()).build();
     }
 }

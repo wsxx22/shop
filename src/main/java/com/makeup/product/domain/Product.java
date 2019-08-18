@@ -18,10 +18,10 @@ class Product {
     Long id;
     String name;
     String description;
-    double amount;
+    double capacity;
     BigDecimal price;
 
-    @Getter(AccessLevel.NONE)
+    @Getter(AccessLevel.PRIVATE)
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
             @JoinTable(name = "product_categories", joinColumns = @JoinColumn(name = "id_product"),
                                                     inverseJoinColumns = @JoinColumn(name = "id_category"))
