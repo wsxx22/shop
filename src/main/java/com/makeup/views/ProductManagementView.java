@@ -83,7 +83,7 @@ public class ProductManagementView extends Composite implements View {
         });
 
         returnButton.addClickListener(clickEvent -> getUI().getNavigator().navigateTo("homepage"));
-        
+
         buttonsHorizontalLayout.addComponents(saveProduct, returnButton);
         textFieldsLayout.addComponents(nameTextfield,descriptionTextfield,capacityTextField,priceTextField,amountTextField);
         menuLayout.addComponents(textFieldsLayout,buttonsHorizontalLayout);
