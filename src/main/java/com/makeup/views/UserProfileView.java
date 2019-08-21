@@ -52,8 +52,9 @@ public class UserProfileView extends Composite implements View {
             Button settingsButton = new Button("Change settings", VaadinIcons.LIST);
             Button logoutButton = new Button("Logout", VaadinIcons.SIGN_OUT);
 
-            settingsButton.addClickListener(clickEvent ->
-                    navigateTo("user-settings"));
+            productsButton.addClickListener(clickEvent -> navigateTo("products"));
+
+            settingsButton.addClickListener(clickEvent -> navigateTo("user-settings"));
 
             logoutButton.addClickListener(clickEvent -> {
                     userFacade.logout();

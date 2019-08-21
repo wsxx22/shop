@@ -40,16 +40,22 @@ public class OwnerProfileView extends Composite implements View {
         menuLayout.setWidth("350");
     }
 
-    private void authorizedUserLayout(){
+    private void authorizedOwnerLayout(){
 
+        Button productsButton = new Button("Products in the store");
+        Button addProduct = new Button("Add new product");
         Button logoutButton = new Button("Logout", VaadinIcons.SIGN_OUT);
+
+        productsButton.addClickListener(clickEvent -> navigateTo("products"));
+
+        addProduct.addClickListener(clickEvent -> navigateTo("product-management"));
 
         logoutButton.addClickListener(clickEvent -> {
             userFacade.logout();
             navigateTo("homepage");
         });
 
-        menuLayout.addComponents(logoutButton);
+        menuLayout.addComponents(productsButton,addProduct,logoutButton);
         root.addComponents(menuLayout);
     }
 
@@ -61,6 +67,6 @@ public class OwnerProfileView extends Composite implements View {
     public void enter(ViewChangeListener.ViewChangeEvent event) {
         setupLayout();
         header();
-        authorizedUserLayout();
+        authorizedOwnerLayout();
     }
 }

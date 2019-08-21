@@ -18,6 +18,16 @@ public class CreateProductDto {
     String description;
     double capacity;
     BigDecimal price;
+    int amount;
 
     Set<CategoryDto> categories;
+
+    @Override
+    public String toString() {
+        return "Name: " + name
+                + ", Capacity: " + capacity
+                + ", Price: " + price
+                + ", Amount: " + amount
+                + ", Categories:" + categories.toString();
+    }
 }

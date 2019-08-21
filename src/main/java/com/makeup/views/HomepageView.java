@@ -58,7 +58,7 @@ public class HomepageView extends Composite implements View {
         GlobalAuthorization.getUserRoles().stream()
                 .filter(role -> role.equals(ADMIN_ROLE))
                 .findAny()
-                .ifPresent(role -> getUI().getNavigator().navigateTo("owner-profile"));
+                .ifPresent(role -> navigateTo("owner-profile"));
     }
 
     private void cashierRole() {
@@ -80,9 +80,9 @@ public class HomepageView extends Composite implements View {
         Button loginButton = new Button("Sign In", VaadinIcons.SIGN_IN);
         Button registerButton = new Button("Register", VaadinIcons.USER);
 
-        loginButton.addClickListener(clickEvent -> getUI().getNavigator().navigateTo("login"));
-
-        registerButton.addClickListener(clickEvent -> getUI().getNavigator().navigateTo("register-account"));
+        productsButton.addClickListener(clickEvent -> navigateTo("products"));
+        loginButton.addClickListener(clickEvent -> navigateTo("login"));
+        registerButton.addClickListener(clickEvent -> navigateTo("register-account"));
 
         SettingsLayout.setSizeFullButtons(productsButton, loginButton, registerButton);
         menuLayout.addComponents(productsButton, loginButton, registerButton);

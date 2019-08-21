@@ -18,4 +18,5 @@ public class ProductDto {
     String description;
     double capacity;
     BigDecimal price;
+    int amount;
 }

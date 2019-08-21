@@ -57,8 +57,8 @@ public class SignInView extends Composite implements View {
 
         returnButton.addClickListener(clickEvent -> getUI().getNavigator().navigateTo("homepage"));
 
-        VaadinSession.getCurrent().setErrorHandler(errorEvent ->
-                Notification.show(ParameterizedException.exception, ERROR_MESSAGE));
+//        VaadinSession.getCurrent().setErrorHandler(errorEvent ->
+//                Notification.show(ParameterizedException.exception, ERROR_MESSAGE));
 
         SettingsLayout.setFullSizeTextFields(loginField, passwordField);
         buttonsLayout.addComponents(signInButton,returnButton);

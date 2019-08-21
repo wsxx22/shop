@@ -15,14 +15,18 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 class Product {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     String name;
     String description;
     double capacity;
     BigDecimal price;
+    int amount;
 
-    @Getter(AccessLevel.PRIVATE)
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Getter(AccessLevel.NONE)
+    @ManyToMany(fetch = FetchType.EAGER)
             @JoinTable(name = "product_categories", joinColumns = @JoinColumn(name = "id_product"),
                                                     inverseJoinColumns = @JoinColumn(name = "id_category"))
     Set<Category> categories;
