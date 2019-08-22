@@ -5,10 +5,9 @@ import org.mapstruct.Mapper;
 
 import java.util.Set;
 
-@Mapper(componentModel = "spring")
-interface ProductMapper {
+abstract class ProductMapper {
 
-    ProductDto toDto(Product product);
+    public abstract ProductDto toDto(Product product);
 
-    Set<ProductDto> toDtoSet(Set<Product> products);
+    public abstract Set<ProductDto> toDtoSet(Set<Product> products);
 }

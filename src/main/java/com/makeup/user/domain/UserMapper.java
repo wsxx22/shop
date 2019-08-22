@@ -7,7 +7,6 @@ import org.mapstruct.Mapper;
 import java.util.Collection;
 import java.util.List;
 
-//@Mapper(componentModel = "spring")
 interface UserMapper {
 
     UserDto toDto(User user);

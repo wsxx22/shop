@@ -4,14 +4,16 @@ import com.makeup.role.domain.dto.CreateRoleDto;
 import com.makeup.role.domain.exception.InvalidRoleException;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.annotation.processing.Generated;
 import java.util.HashSet;
 import java.util.Set;
 
 import static com.makeup.role.domain.exception.InvalidRoleException.CAUSE.ROLE_COULD_NOT_CONVERTED;
 import static com.makeup.role.domain.exception.InvalidRoleException.CAUSE.ROLE_NOT_FOUND;
 
+@Generated(value = "asd")
 @Slf4j
-class RoleMapperImpl implements RoleMapper {
+class RoleMapperImpl extends RoleMapper {
     @Override
     public CreateRoleDto toDto(Role role) {
         if (role == null){

@@ -5,8 +5,7 @@ import org.mapstruct.Mapper;
 
 import java.util.Set;
 
-@Mapper(componentModel = "spring")
-interface RoleMapper{
-    CreateRoleDto toDto (Role role);
-    Set<CreateRoleDto> toDtoSet(Set<Role> roles);
+abstract class RoleMapper{
+    abstract CreateRoleDto toDto (Role role);
+    abstract Set<CreateRoleDto> toDtoSet(Set<Role> roles);
 }

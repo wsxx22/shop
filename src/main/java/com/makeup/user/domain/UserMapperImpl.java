@@ -6,7 +6,7 @@ import com.makeup.user.domain.query.UserQueryDto;
 import java.util.Collection;
 import java.util.List;
 
-public class UserMapperImpl implements UserMapper {
+class UserMapperImpl implements UserMapper {
     @Override
     public UserDto toDto(User user) {
         return null;

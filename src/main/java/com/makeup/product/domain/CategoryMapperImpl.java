@@ -4,6 +4,7 @@ import com.makeup.product.domain.dto.CategoryDto;
 import com.makeup.product.domain.exception.InvalidCategoryException;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.annotation.processing.Generated;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -12,7 +13,7 @@ import java.util.stream.Stream;
 import static com.makeup.product.domain.exception.InvalidCategoryException.CAUSE.*;
 
 @Slf4j
-class CategoryMapperImpl implements CategoryMapper {
+class CategoryMapperImpl extends CategoryMapper {
     @Override
     public Category toEntity(CategoryDto categoryDto) {
         Stream.of(categoryDto)
