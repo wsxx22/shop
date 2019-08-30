@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -20,7 +21,12 @@ public class CreateProductDto {
     BigDecimal price;
     int amount;
 
+    @Getter(AccessLevel.NONE)
     Set<CategoryDto> categories;
+
+    public Set<CategoryDto> getCategories(){
+        return new HashSet<>(categories);
+    }
 
     @Override
     public String toString() {

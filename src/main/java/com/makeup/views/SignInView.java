@@ -2,6 +2,7 @@ package com.makeup.views;
 
 import com.makeup.user.domain.UserFacade;
 import com.makeup.utils.ParameterizedException;
+import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -11,8 +12,7 @@ import com.vaadin.ui.*;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 
-import static com.vaadin.ui.Notification.Type.ERROR_MESSAGE;
-import static com.vaadin.ui.Notification.Type.HUMANIZED_MESSAGE;
+import static com.vaadin.ui.Notification.Type.*;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @SpringView(name = "login")
@@ -47,6 +47,7 @@ public class SignInView extends Composite implements View {
         PasswordField passwordField = new PasswordField("Password:");
 
         Button signInButton = new Button("Sign In", VaadinIcons.SIGN_IN);
+        signInButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
         Button returnButton = new Button("Return", VaadinIcons.EXIT);
 
         signInButton.addClickListener(clickEvent -> {
@@ -58,7 +59,7 @@ public class SignInView extends Composite implements View {
         returnButton.addClickListener(clickEvent -> getUI().getNavigator().navigateTo("homepage"));
 
         VaadinSession.getCurrent().setErrorHandler(errorEvent ->
-                Notification.show(ParameterizedException.exception, ERROR_MESSAGE));
+                Notification.show(ParameterizedException.exception, WARNING_MESSAGE));
 
         SettingsLayout.setFullSizeTextFields(loginField, passwordField);
         buttonsLayout.addComponents(signInButton,returnButton);

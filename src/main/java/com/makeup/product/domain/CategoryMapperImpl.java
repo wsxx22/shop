@@ -34,8 +34,8 @@ class CategoryMapperImpl implements CategoryMapper {
                 .filter(set -> !set.isEmpty())
                 .findFirst()
                 .orElseThrow(() -> {
-                    log.error(String.format(CANT_CONVERT_TO_ENTITY.getMessage(), DTO_SET_IS_EMPTY.getMessage()));
-                    throw new InvalidCategoryException(CANT_CONVERT_TO_ENTITY);
+                    log.error(String.format(CANT_CONVERT_TO_ENTITY.getMessage(), SET_IS_EMPTY.getMessage()));
+                    throw new InvalidCategoryException(SET_IS_EMPTY);
                 });
         Set<Category> categories = new HashSet<>();
         for (CategoryDto dto : categoriesDto){
@@ -65,7 +65,7 @@ class CategoryMapperImpl implements CategoryMapper {
                 .findFirst()
                 .orElseThrow(() -> {
                     log.error(String.format(CANT_CONVERT_TO_DTO.getMessage(), SET_IS_EMPTY.getMessage()));
-                    throw new InvalidCategoryException(CANT_CONVERT_TO_DTO);
+                    throw new InvalidCategoryException(SET_IS_EMPTY);
                 });
         Set<CategoryDto> categoriesDto = new HashSet<>();
         for (Category c : categories){

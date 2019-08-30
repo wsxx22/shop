@@ -2,19 +2,19 @@ package com.makeup.product.domain;
 
 import com.makeup.product.domain.dto.CreateProductDto;
 import com.makeup.product.domain.exception.InvalidProductException;
-import org.apache.commons.lang3.StringUtils;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
-import java.util.Objects;
 import java.util.stream.Stream;
 
-import static com.makeup.product.domain.exception.InvalidProductException.CAUSE.INVALID_PRODUCT_AMOUNT;
-import static com.makeup.product.domain.exception.InvalidProductException.CAUSE.INVALID_PRODUCT_CAPACITY;
-import static com.makeup.product.domain.exception.InvalidProductException.CAUSE.INVALID_PRODUCT_DESCRIPTION;
-import static com.makeup.product.domain.exception.InvalidProductException.CAUSE.INVALID_PRODUCT_NAME;
-import static com.makeup.product.domain.exception.InvalidProductException.CAUSE.INVALID_PRODUCT_PRICE;
-
+import static com.makeup.product.domain.exception.InvalidProductException.CAUSE.*;
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@AllArgsConstructor
 class ProductValidator {
+
+    ProductRepository productRepository;
 
     void validDto(CreateProductDto createProductDto){
         validName(createProductDto.getName());
@@ -33,6 +33,11 @@ class ProductValidator {
     }
 
     private void validName(String name){
+        productRepository.findByName(name)
+                .ifPresent(product -> {
+                    throw new InvalidProductException(PRODUCT_NAME_EXISTS);
+                });
+
         Stream.of(name)
                 .filter(n -> n.length() > 0)
                 .filter(n -> n.length() <= 30)
@@ -40,10 +45,11 @@ class ProductValidator {
                 .orElseThrow(() -> new InvalidProductException(INVALID_PRODUCT_NAME));
     }
 
+
     private void validCapacity(double capacity){
         Stream.of(capacity)
                 .filter(c -> c > 0.0)
-                .filter(c -> c < 10)
+                .filter(c -> c <= 10)
                 .findFirst()
                 .orElseThrow(() -> new InvalidProductException(INVALID_PRODUCT_CAPACITY));
     }
@@ -62,5 +68,4 @@ class ProductValidator {
                 .findFirst()
                 .orElseThrow(() -> new InvalidProductException(INVALID_PRODUCT_DESCRIPTION));
     }
-
 }

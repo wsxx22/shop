@@ -11,7 +11,7 @@ class ProductConfiguration {
         return new ProductFacade(new ProductService(
                 productRepository,
                 new ProductFactory(new CategoryMapperImpl()),
-                new ProductValidator(),
+                new ProductValidator(productRepository),
                 new ProductMapperImpl()
         ));
     }

@@ -5,6 +5,7 @@ import com.makeup.product.domain.ProductFacade;
 import com.makeup.product.domain.dto.CategoryDto;
 import com.makeup.product.domain.dto.CreateProductDto;
 import com.makeup.utils.ParameterizedException;
+import com.makeup.views.message.ViewMessage;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -16,6 +17,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
 
+import static com.makeup.views.message.ViewMessage.CAUSE.PRODUCT_ADDED;
 import static com.vaadin.ui.Notification.Type.WARNING_MESSAGE;
 import static java.lang.Integer.parseInt;
 
@@ -81,12 +83,10 @@ public class ProductManagementView extends Composite implements View {
                                                                 parseInt(amountTextField.getValue()),
                                                                 productCategories.getSelectedItems());
             productFacade.addProduct(productDto);
+            Notification.show(PRODUCT_ADDED.getMessage()).setDelayMsec(1500);
         });
 
         returnButton.addClickListener(clickEvent -> getUI().getNavigator().navigateTo("homepage"));
-
-        VaadinSession.getCurrent().setErrorHandler(errorEvent ->
-                Notification.show(ParameterizedException.exception, WARNING_MESSAGE).setDelayMsec(1000));
 
         buttonsHorizontalLayout.addComponents(saveProductButton, returnButton);
         textFieldsLayout.addComponents(nameTextfield,descriptionTextfield,capacityTextField,priceTextField,amountTextField);

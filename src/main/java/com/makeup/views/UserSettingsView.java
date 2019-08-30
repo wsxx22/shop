@@ -4,6 +4,7 @@ import com.makeup.role.domain.RoleFacade;
 import com.makeup.user.domain.UserFacade;
 import com.makeup.utils.GlobalAuthorization;
 import com.makeup.utils.ParameterizedException;
+import com.vaadin.event.ShortcutAction;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.VaadinSession;
@@ -57,6 +58,7 @@ public class UserSettingsView extends Composite implements View {
             PasswordField changePasswordField = new PasswordField("Enter a new password:");
 
             Button saveChangesButton = new Button("Save");
+            saveChangesButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
             Button returnButton = new Button("Return");
 
             saveChangesButton.addClickListener(clickEvent -> {

@@ -1,13 +1,13 @@
 package com.makeup.views;
 
-import com.makeup.views.exception.ViewException;
+import com.makeup.views.message.ViewMessage;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.stream.Stream;
 
-import static com.makeup.views.exception.ViewException.CAUSE.*;
+import static com.makeup.views.message.ViewMessage.CAUSE.*;
 
 class ValidationField {
 
@@ -22,7 +22,7 @@ class ValidationField {
                                 continue;
                             }
                         }
-                        throw new ViewException(String.format(FIELD_MUST_BE_DIGIT.getMessage(), field.getCaption()));
+                        throw new ViewMessage(String.format(FIELD_MUST_BE_DIGIT.getMessage(), field.getCaption()));
                     }
                 });
     }
@@ -32,7 +32,7 @@ class ValidationField {
             for(char c : field.getValue().toCharArray()) {
                 if (isDigit(c)) {
                 } else {
-                    throw new ViewException(String.format(FIELD_MUST_BE_INTEGER.getMessage(), field.getCaption()));
+                    throw new ViewMessage(String.format(FIELD_MUST_BE_INTEGER.getMessage(), field.getCaption()));
                 }
             }
         });
@@ -42,7 +42,7 @@ class ValidationField {
         Stream.of(textFields)
                 .filter(field -> StringUtils.isBlank(field.getValue()))
                 .forEach(field -> {
-                    throw new ViewException(String.format(COULD_NOT_BE_BLANK.getMessage(), field.getCaption()));
+                    throw new ViewMessage(String.format(COULD_NOT_BE_BLANK.getMessage(), field.getCaption()));
                 });
     }
 
@@ -50,7 +50,7 @@ class ValidationField {
         Stream.of(textAreas)
                 .filter(area -> StringUtils.isBlank(area.getValue()))
                 .forEach(area -> {
-                    throw new ViewException(String.format(COULD_NOT_BE_BLANK.getMessage(), area.getCaption()));
+                    throw new ViewMessage(String.format(COULD_NOT_BE_BLANK.getMessage(), area.getCaption()));
                 });
     }
 
