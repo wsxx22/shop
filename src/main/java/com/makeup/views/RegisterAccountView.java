@@ -16,6 +16,7 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import static com.makeup.utils.Constant.User.USER_ROLE;
 import static com.vaadin.ui.Notification.Type.ERROR_MESSAGE;
+import static com.vaadin.ui.Notification.Type.WARNING_MESSAGE;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @SpringView(name = "register-account")
@@ -66,8 +67,8 @@ public class RegisterAccountView extends Composite implements View {
 
         returnButton.addClickListener(click -> navigateToHomepage());
 
-//        VaadinSession.getCurrent().setErrorHandler(errorEvent ->
-//                Notification.show(ParameterizedException.exception, ERROR_MESSAGE).setDelayMsec(2000));
+        VaadinSession.getCurrent().setErrorHandler(errorEvent ->
+                Notification.show(ParameterizedException.exception, WARNING_MESSAGE).setDelayMsec(2000));
 
         SettingsLayout.setFullSizeTextFields(loginField, emailField, passwordField);
         SettingsLayout.setSizeButtons(createAccountButton, returnButton);

@@ -34,7 +34,6 @@ class ProductValidator {
 
     private void validName(String name){
         Stream.of(name)
-                .filter(Objects::nonNull)
                 .filter(n -> n.length() > 0)
                 .filter(n -> n.length() <= 30)
                 .findFirst()
@@ -43,7 +42,7 @@ class ProductValidator {
 
     private void validCapacity(double capacity){
         Stream.of(capacity)
-                .filter(c -> c > 0)
+                .filter(c -> c > 0.0)
                 .filter(c -> c < 10)
                 .findFirst()
                 .orElseThrow(() -> new InvalidProductException(INVALID_PRODUCT_CAPACITY));
@@ -51,7 +50,6 @@ class ProductValidator {
 
     private void validPrice(BigDecimal price){
         Stream.of(price)
-                .filter(Objects::nonNull)
                 .filter(p -> p.compareTo(new BigDecimal("10000")) <= 0)
                 .filter(p -> p.compareTo(new BigDecimal("0")) > 0)
                 .findFirst()
@@ -60,8 +58,6 @@ class ProductValidator {
 
     private void validDescription(String description){
         Stream.of(description)
-                .filter(Objects::nonNull)
-                .filter(StringUtils::isNotBlank)
                 .filter(p -> p.length() <= 200)
                 .findFirst()
                 .orElseThrow(() -> new InvalidProductException(INVALID_PRODUCT_DESCRIPTION));

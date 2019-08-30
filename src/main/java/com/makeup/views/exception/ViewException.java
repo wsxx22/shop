@@ -9,14 +9,14 @@ public class ViewException extends ParameterizedException {
     @Getter
     @AllArgsConstructor
     public enum CAUSE {
-        FIELD_COULD_NOT_BE_BLANK("%s could not be blank"),
-        FIELD_MUST_BE_DIGIT("%s must be digit. Format xxxx.xx"),
+        COULD_NOT_BE_BLANK("%s could not be blank"),
+        FIELD_MUST_BE_DIGIT("%s must be digit. Format x.xx"),
         FIELD_MUST_BE_INTEGER("%s must be digit. Range 0 - 1000");
 
         String message;
     }
 
-    public ViewException(CAUSE cause) {
-        super(cause.message);
+    public ViewException(String message) {
+        super(message);
     }
 }

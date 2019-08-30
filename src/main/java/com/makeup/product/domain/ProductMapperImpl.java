@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 import static com.makeup.product.domain.exception.InvalidProductException.CAUSE.CANT_CONVERT_TO_DTO;
 
 @Slf4j
-class ProductMapperImpl extends ProductMapper {
+class ProductMapperImpl implements ProductMapper {
     @Override
     public ProductDto toDto(Product product) {
         Stream.of(product)
