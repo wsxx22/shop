@@ -11,7 +11,7 @@ public class InvalidProductException extends ParameterizedException {
     public enum CAUSE{
         CANT_CONVERT_TO_DTO("Product could not converted to Dto."),
         INVALID_PRODUCT_NAME("Product must contains from 1 to 30 characters."),
-        INVALID_PRODUCT_DESCRIPTION("Product description must contains from 1 to 200 characters."),
+        INVALID_PRODUCT_DESCRIPTION("Product description can contain maximum 200 characters."),
         INVALID_PRODUCT_PRICE("Product must contain the price. Maximum price is 10.000"),
         INVALID_PRODUCT_CAPACITY("Product must contain the capacity. Maximum capacity is 10 liters"),
         INVALID_PRODUCT_AMOUNT("value range 0-1000");

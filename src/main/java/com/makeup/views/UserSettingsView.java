@@ -14,6 +14,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.util.stream.Stream;
 
+import static com.vaadin.ui.Notification.Type.ERROR_MESSAGE;
 import static com.vaadin.ui.Notification.Type.WARNING_MESSAGE;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -59,14 +60,14 @@ public class UserSettingsView extends Composite implements View {
             Button returnButton = new Button("Return");
 
             saveChangesButton.addClickListener(clickEvent -> {
-                changePassword(changePasswordField);
                 changeEmail(changeEmailField);
+                changePassword(changePasswordField);
             });
             returnButton.addClickListener(clickEvent ->
                     getUI().getNavigator().navigateTo("user-profile"));
 
             VaadinSession.getCurrent().setErrorHandler(
-                    errorEvent -> Notification.show(ParameterizedException.exception, WARNING_MESSAGE));
+                    errorEvent -> Notification.show(ParameterizedException.exception, ERROR_MESSAGE).setDelayMsec(1000));
 
             buttonsLayout.addComponents(saveChangesButton, returnButton);
             menuLayout.addComponents(changeEmailField, changePasswordField, buttonsLayout);

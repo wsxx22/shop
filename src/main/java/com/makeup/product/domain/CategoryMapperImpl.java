@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 import static com.makeup.product.domain.exception.InvalidCategoryException.CAUSE.*;
 
 @Slf4j
-class CategoryMapperImpl extends CategoryMapper {
+class CategoryMapperImpl implements CategoryMapper {
     @Override
     public Category toEntity(CategoryDto categoryDto) {
         Stream.of(categoryDto)

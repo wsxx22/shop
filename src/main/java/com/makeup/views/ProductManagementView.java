@@ -4,19 +4,19 @@ import com.makeup.product.domain.CategoryFacade;
 import com.makeup.product.domain.ProductFacade;
 import com.makeup.product.domain.dto.CategoryDto;
 import com.makeup.product.domain.dto.CreateProductDto;
+import com.makeup.utils.ParameterizedException;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
-import java.util.Set;
 
-import static com.makeup.views.exception.ViewException.CAUSE.FIELD_MUST_BE_DIGIT;
-import static com.makeup.views.exception.ViewException.CAUSE.FIELD_MUST_BE_INTEGER;
+import static com.vaadin.ui.Notification.Type.WARNING_MESSAGE;
 import static java.lang.Integer.parseInt;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -27,6 +27,7 @@ public class ProductManagementView extends Composite implements View {
     VerticalLayout menuLayout;
     ProductFacade productFacade;
     CategoryFacade categoryFacade;
+    ValidationField validationField;
 
     public ProductManagementView(ProductFacade productFacade, CategoryFacade categoryFacade) {
         this.productFacade = productFacade;
@@ -49,7 +50,7 @@ public class ProductManagementView extends Composite implements View {
     }
 
     private void managementProduct(){
-
+        validationField = new ValidationField();
         HorizontalLayout mainMenuLayout = new HorizontalLayout();
         mainMenuLayout.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
 
@@ -65,14 +66,14 @@ public class ProductManagementView extends Composite implements View {
         TextField capacityTextField = new TextField("Capacity:");
         TextField priceTextField = new TextField("Price:");
         TextField amountTextField = new TextField("Amount:");
-        Button saveProduct = new Button("Save product", VaadinIcons.COMPILE);
+        Button saveProductButton = new Button("Save product", VaadinIcons.COMPILE);
         Button returnButton = new Button("Return", VaadinIcons.EXIT);
 
-        validTextField(capacityTextField);
-        validTextField(priceTextField);
-        validIsInteger(amountTextField);
-
-        saveProduct.addClickListener(clickEvent -> {
+        saveProductButton.addClickListener(clickEvent -> {
+            validationField.validBlankField(nameTextfield,capacityTextField,priceTextField,amountTextField);
+            validationField.validFieldIsDouble(capacityTextField, priceTextField);
+            validationField.validFieldIsInteger(amountTextField);
+            validationField.validBlankArea(descriptionTextfield);
             CreateProductDto productDto = new CreateProductDto(nameTextfield.getValue(),
                                                                 descriptionTextfield.getValue(),
                                                                 Double.parseDouble(capacityTextField.getValue()),
@@ -84,42 +85,14 @@ public class ProductManagementView extends Composite implements View {
 
         returnButton.addClickListener(clickEvent -> getUI().getNavigator().navigateTo("homepage"));
 
-        buttonsHorizontalLayout.addComponents(saveProduct, returnButton);
+        VaadinSession.getCurrent().setErrorHandler(errorEvent ->
+                Notification.show(ParameterizedException.exception, WARNING_MESSAGE).setDelayMsec(1000));
+
+        buttonsHorizontalLayout.addComponents(saveProductButton, returnButton);
         textFieldsLayout.addComponents(nameTextfield,descriptionTextfield,capacityTextField,priceTextField,amountTextField);
         menuLayout.addComponents(textFieldsLayout,buttonsHorizontalLayout);
         mainMenuLayout.addComponents(menuLayout, productCategories);
         root.addComponent(mainMenuLayout);
-    }
-
-    private void validTextField(TextField field){
-//        if (field.isEmpty())
-        boolean dot = false;
-        for(char c : field.getValue().toCharArray()){
-            if (isDigit(c)) continue;
-            if (c == '.'){
-                if (!dot){
-                    dot=true;
-                    continue;
-                }
-            }
-            throw new RuntimeException(String.format(FIELD_MUST_BE_DIGIT.getMessage(), field.getCaption()));
-        }
-    }
-
-    private void validIsInteger(TextField field){
-        for(char c : field.getValue().toCharArray()) {
-            if (isDigit(c)) {
-            } else {
-                throw new RuntimeException(String.format(FIELD_MUST_BE_INTEGER.getMessage(), field.getCaption()));
-            }
-        }
-    }
-
-    private boolean isDigit(char c) {
-        if (c == '0' | c == '1' | c == '2' | c == '3' | c == '4' | c == '5' | c == '6' | c == '7' | c == '8' | c == '9') {
-            return true;
-        }
-        return false;
     }
 
     @Override
