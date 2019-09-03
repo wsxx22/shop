@@ -1,10 +1,7 @@
 package com.makeup.user.domain.query;
 
 import com.makeup.role.domain.query.RoleQueryDto;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
@@ -13,6 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

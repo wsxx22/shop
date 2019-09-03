@@ -1,0 +1,1 @@
+INSERT INTO orders (id_customer, price, order_date) VALUES (2, 55.20, CURRENT_TIMESTAMP());

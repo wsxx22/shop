@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import static com.makeup.product.domain.exception.InvalidProductException.CAUSE.*;
@@ -30,6 +31,10 @@ class ProductValidator {
                 .filter(amount -> amount < 1000)
                 .findFirst()
                 .orElseThrow(() -> new InvalidProductException(INVALID_PRODUCT_AMOUNT));
+        Optional.of(value)
+                .filter(amount -> amount >= 0)
+                .filter(amount -> amount < 1000)
+                .orElseThrow(() -> new InvalidProductException(INVALID_PRODUCT_AMOUNT));
     }
 
     private void validName(String name){
@@ -44,7 +49,6 @@ class ProductValidator {
                 .findFirst()
                 .orElseThrow(() -> new InvalidProductException(INVALID_PRODUCT_NAME));
     }
-
 
     private void validCapacity(double capacity){
         Stream.of(capacity)

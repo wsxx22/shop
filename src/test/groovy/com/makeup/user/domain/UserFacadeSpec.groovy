@@ -33,7 +33,7 @@ class UserFacadeSpec extends Specification{
             userFacade.logout()
     }
 
-    def 'should create account'(){
+    void  'should create account'(){
         given:
         def createUserDto = CreateUserDto.builder()
                 .login('janek')

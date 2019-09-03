@@ -1,6 +1,7 @@
 package com.makeup.user.domain;
 
 import com.makeup.user.domain.dto.CreateUserDto;
+import com.makeup.user.domain.query.UserQueryDto;
 import com.makeup.utils.GlobalAuthorization;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -33,5 +34,9 @@ public class UserFacade {
 
     public void changeEmail(String email){
         userService.changeEmail(email);
+    }
+
+    public UserQueryDto findUserQueryByLogin(String login){
+        return userService.findUserQueryByLogin(login);
     }
 }

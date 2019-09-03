@@ -11,8 +11,10 @@ public class ViewMessage extends ParameterizedException {
     public enum CAUSE {
         COULD_NOT_BE_BLANK("%s could not be blank"),
         FIELD_MUST_BE_DIGIT("%s must be digit. Format x.xx"),
-        FIELD_MUST_BE_INTEGER("%s must be digit. Range 0 - 1000"),
-        PRODUCT_ADDED("Product added.");
+        FIELD_MUST_BE_INTEGER("%s must be digit."),
+        PRODUCT_ADDED("Product added."),
+        AMOUNT_RANGE("Amount range must be between 1 and %s."),
+        PRODUCT_BOUGHT("Product %s bought.");
 
         String message;
     }

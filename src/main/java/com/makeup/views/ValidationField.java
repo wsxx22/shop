@@ -1,13 +1,18 @@
 package com.makeup.views;
 
+import com.makeup.product.domain.dto.ProductDto;
 import com.makeup.views.message.ViewMessage;
+import com.vaadin.ui.Grid;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.stream.Stream;
 
-import static com.makeup.views.message.ViewMessage.CAUSE.*;
+import static com.makeup.views.message.ViewMessage.CAUSE.AMOUNT_RANGE;
+import static com.makeup.views.message.ViewMessage.CAUSE.COULD_NOT_BE_BLANK;
+import static com.makeup.views.message.ViewMessage.CAUSE.FIELD_MUST_BE_DIGIT;
+import static com.makeup.views.message.ViewMessage.CAUSE.FIELD_MUST_BE_INTEGER;
 
 class ValidationField {
 
@@ -52,6 +57,16 @@ class ValidationField {
                 .forEach(area -> {
                     throw new ViewMessage(String.format(COULD_NOT_BE_BLANK.getMessage(), area.getCaption()));
                 });
+    }
+
+    void validateAmount(TextField amountToBuyTextField, Grid<ProductDto> productsGrid){
+        validFieldIsInteger(amountToBuyTextField);
+        int amountToBuy = Integer.parseInt(amountToBuyTextField.getValue());
+        int amountInStore = productsGrid.getSelectedItems().iterator().next().getAmount();
+
+        if (amountToBuy > amountInStore || amountToBuy < 0) {
+            throw new ViewMessage(String.format(AMOUNT_RANGE.getMessage(), amountInStore));
+        }
     }
 
     private boolean isDigit(char c) {

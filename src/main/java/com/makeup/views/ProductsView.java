@@ -1,13 +1,21 @@
 package com.makeup.views;
 
+import com.makeup.order.domain.OrderFacade;
+import com.makeup.order.domain.dto.CreateOrderDto;
 import com.makeup.product.domain.ProductFacade;
 import com.makeup.product.domain.dto.ProductDto;
+import com.makeup.utils.GlobalAuthorization;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
+
+import java.util.Set;
+
+import static com.makeup.views.message.ViewMessage.CAUSE.PRODUCT_BOUGHT;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @SpringView(name = "products")
@@ -16,9 +24,12 @@ public class ProductsView extends Composite implements View {
     VerticalLayout root;
     VerticalLayout menuLayout;
     ProductFacade productFacade;
+    OrderFacade orderFacade;
+    ValidationField validationField;
 
-    public ProductsView(ProductFacade productFacade) {
+    public ProductsView(ProductFacade productFacade, OrderFacade orderFacade) {
         this.productFacade = productFacade;
+        this.orderFacade = orderFacade;
     }
 
     private void setup(){
@@ -35,6 +46,7 @@ public class ProductsView extends Composite implements View {
     }
 
     private void products(){
+        validationField = new ValidationField();
         HorizontalLayout navigateButtonsLayout = new HorizontalLayout();
         Grid<ProductDto> productsGrid = new Grid<>("All products in our shop:");
         productsGrid.setWidth("800");
@@ -46,14 +58,29 @@ public class ProductsView extends Composite implements View {
         productsGrid.addColumn(ProductDto::getPrice).setCaption("Price");
 
         Button buyProductsButton = new Button("Buy");
+        TextField amountToBuyTextField = new TextField("Amount to buy");
         Button returnButton = new Button("Return");
+
+        buyProductsButton.addClickListener(clickEvent ->{
+            if (productsGrid.getSelectedItems().size() > 0 && !amountToBuyTextField.isEmpty()) {
+                validationField.validateAmount(amountToBuyTextField, productsGrid);
+                CreateOrderDto createOrderDto = new CreateOrderDto(GlobalAuthorization.name, productsGrid.getSelectedItems());
+                createOrderDto.changeAmount(Integer.parseInt(amountToBuyTextField.getValue()));
+                orderFacade.addOrder(createOrderDto);
+                Notification.show(String.format(
+                        PRODUCT_BOUGHT.getMessage(), productsGrid.getSelectedItems().iterator().next().getName()));
+                getUI().getNavigator().navigateTo("products");
+            }
+        });
 
         returnButton.addClickListener(clickEvent -> navigateTo("homepage"));
 
-        navigateButtonsLayout.addComponents(buyProductsButton,returnButton);
+        navigateButtonsLayout.addComponents(amountToBuyTextField,buyProductsButton,returnButton);
         menuLayout.addComponents(productsGrid, navigateButtonsLayout);
         root.addComponent(menuLayout);
     }
+
+
 
     private void authorized(){
 

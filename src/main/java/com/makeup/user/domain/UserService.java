@@ -1,11 +1,17 @@
 package com.makeup.user.domain;
 
 import com.makeup.user.domain.dto.CreateUserDto;
+import com.makeup.user.domain.exceptions.InvalidUserException;
+import com.makeup.user.domain.query.UserQueryDto;
 import com.makeup.utils.GlobalAuthorization;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.Optional;
+
+import static com.makeup.user.domain.exceptions.InvalidUserException.CAUSE.USER_NOT_FOUND;
 
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -49,4 +55,16 @@ class UserService {
     void login(String name, String password){
         userValidator.authorizeUser(name, password);
     }
+
+    UserQueryDto findUserQueryByLogin(String login){
+        User user = userRepository.findByLogin(login).orElseThrow(() -> new InvalidUserException(USER_NOT_FOUND));
+        return UserQueryDto.builder()
+                .id(user.getId())
+                .login(user.getLogin())
+                .password(user.getPassword())
+                .email(user.getEmail())
+                .roles(user.getRoles()).build();
+    }
+
+
 }

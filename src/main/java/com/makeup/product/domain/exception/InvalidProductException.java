@@ -15,7 +15,8 @@ public class InvalidProductException extends ParameterizedException {
         INVALID_PRODUCT_PRICE("Product must contain the price. Maximum price is 10.000"),
         INVALID_PRODUCT_CAPACITY("Product must contain the capacity. Maximum capacity is 10 liters"),
         INVALID_PRODUCT_AMOUNT("Value range 0-1000"),
-        PRODUCT_NAME_EXISTS("Product exists.");
+        PRODUCT_NAME_EXISTS("Product exists."),
+        PRODUCT_NOT_FOUND("Product not found.");
 
         String message;
     }

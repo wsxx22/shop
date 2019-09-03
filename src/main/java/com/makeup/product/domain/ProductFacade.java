@@ -24,4 +24,7 @@ public class ProductFacade {
         return productService.findAllProducts();
     }
 
+    public void update(ProductDto productDto){
+        productService.update(productDto);
+    }
 }
