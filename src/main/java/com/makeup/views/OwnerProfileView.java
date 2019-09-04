@@ -16,11 +16,9 @@ public class OwnerProfileView extends Composite implements View {
 
     VerticalLayout root;
     VerticalLayout menuLayout;
-    RoleFacade roleFacade;
     UserFacade userFacade;
 
-    public OwnerProfileView(RoleFacade roleFacade, UserFacade userFacade) {
-        this.roleFacade = roleFacade;
+    public OwnerProfileView(UserFacade userFacade) {
         this.userFacade = userFacade;
     }
 
@@ -37,25 +35,24 @@ public class OwnerProfileView extends Composite implements View {
 
         menuLayout = new VerticalLayout();
         menuLayout.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
-        menuLayout.setWidth("350");
     }
 
     private void authorizedOwnerLayout(){
 
         Button productsButton = new Button("Products in the store");
-        Button addProduct = new Button("Add new product");
+        Button managementProductsButton = new Button("Add a new product or update an existing one");
         Button logoutButton = new Button("Logout", VaadinIcons.SIGN_OUT);
 
         productsButton.addClickListener(clickEvent -> navigateTo("products"));
 
-        addProduct.addClickListener(clickEvent -> navigateTo("product-management"));
+        managementProductsButton.addClickListener(clickEvent -> navigateTo("product-management"));
 
         logoutButton.addClickListener(clickEvent -> {
             userFacade.logout();
             navigateTo("homepage");
         });
 
-        menuLayout.addComponents(productsButton,addProduct,logoutButton);
+        menuLayout.addComponents(managementProductsButton,productsButton,logoutButton);
         root.addComponents(menuLayout);
     }
 

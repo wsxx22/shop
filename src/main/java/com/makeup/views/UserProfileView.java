@@ -1,6 +1,5 @@
 package com.makeup.views;
 
-import com.makeup.role.domain.RoleFacade;
 import com.makeup.user.domain.UserFacade;
 import com.makeup.utils.GlobalAuthorization;
 import com.vaadin.icons.VaadinIcons;
@@ -20,11 +19,9 @@ public class UserProfileView extends Composite implements View {
 
     VerticalLayout root;
     VerticalLayout menuLayout;
-    RoleFacade roleFacade;
     UserFacade userFacade;
 
-    public UserProfileView(RoleFacade roleFacade, UserFacade userFacade) {
-        this.roleFacade = roleFacade;
+    public UserProfileView(UserFacade userFacade) {
         this.userFacade = userFacade;
     }
 
@@ -48,14 +45,13 @@ public class UserProfileView extends Composite implements View {
         if (GlobalAuthorization.isAuthorized()){
             header();
             Button productsButton = new Button("View products in the store", VaadinIcons.SHOP);
-            Button historyOrderButton = new Button("History order", VaadinIcons.LIST);
+            Button historyOrderButton = new Button("History bought products", VaadinIcons.LIST);
             Button settingsButton = new Button("Change settings", VaadinIcons.LIST);
             Button logoutButton = new Button("Logout", VaadinIcons.SIGN_OUT);
 
             productsButton.addClickListener(clickEvent -> navigateTo("products"));
-
+            historyOrderButton.addClickListener(clickEvent -> navigateTo("history-orders"));
             settingsButton.addClickListener(clickEvent -> navigateTo("user-settings"));
-
             logoutButton.addClickListener(clickEvent -> {
                     userFacade.logout();
                     navigateTo("homepage");

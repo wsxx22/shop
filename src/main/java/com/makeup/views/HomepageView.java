@@ -1,7 +1,5 @@
 package com.makeup.views;
 
-import com.makeup.role.domain.RoleFacade;
-import com.makeup.user.domain.UserFacade;
 import com.makeup.utils.GlobalAuthorization;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
@@ -18,13 +16,6 @@ import static com.makeup.utils.Constant.User.*;
 public class HomepageView extends Composite implements View {
     VerticalLayout root;
     VerticalLayout menuLayout;
-    RoleFacade roleFacade;
-    UserFacade userFacade;
-
-    public HomepageView(RoleFacade roleFacade, UserFacade userFacade) {
-        this.roleFacade = roleFacade;
-        this.userFacade = userFacade;
-    }
 
     private void setupLayout(){
         root = new VerticalLayout();

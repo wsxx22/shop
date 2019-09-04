@@ -9,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.stream.Stream;
 
-import static com.makeup.views.message.ViewMessage.CAUSE.AMOUNT_RANGE;
+import static com.makeup.views.message.ViewMessage.CAUSE.AMOUNT_TO_BUY_RANGE;
 import static com.makeup.views.message.ViewMessage.CAUSE.COULD_NOT_BE_BLANK;
 import static com.makeup.views.message.ViewMessage.CAUSE.FIELD_MUST_BE_DIGIT;
 import static com.makeup.views.message.ViewMessage.CAUSE.FIELD_MUST_BE_INTEGER;
@@ -35,8 +35,7 @@ class ValidationField {
     void validFieldIsInteger(TextField... textFields){
         Stream.of(textFields).forEach(field -> {
             for(char c : field.getValue().toCharArray()) {
-                if (isDigit(c)) {
-                } else {
+                if (!isDigit(c)) {
                     throw new ViewMessage(String.format(FIELD_MUST_BE_INTEGER.getMessage(), field.getCaption()));
                 }
             }
@@ -65,7 +64,7 @@ class ValidationField {
         int amountInStore = productsGrid.getSelectedItems().iterator().next().getAmount();
 
         if (amountToBuy > amountInStore || amountToBuy < 0) {
-            throw new ViewMessage(String.format(AMOUNT_RANGE.getMessage(), amountInStore));
+            throw new ViewMessage(String.format(AMOUNT_TO_BUY_RANGE.getMessage(), amountInStore));
         }
     }
 

@@ -1,6 +1,7 @@
 package com.makeup.order.domain;
 
 import com.makeup.order.domain.dto.CreateOrderDto;
+import com.makeup.order.domain.dto.OrderDto;
 import com.makeup.product.domain.dto.ProductDto;
 import com.makeup.product.domain.query.ProductQueryDto;
 import com.makeup.user.domain.UserFacade;
@@ -26,6 +27,35 @@ class OrderMapperImpl implements OrderMapper {
                 .orderDate(LocalDateTime.now())
                 .price(getTotalPrice(createOrderDto.getProducts()))
                 .products(getProductsQuery(createOrderDto.getProducts())).build();
+    }
+
+    @Override
+    public OrderDto toDto(Order order) {
+        return OrderDto.builder()
+                .id(order.getId())
+                .idCustomer(order.getCustomer().getId())
+                .orderTime(order.getOrderDate())
+                .totalPrice(order.getPrice())
+                .products(getProductsDto(order.getProducts())).build();
+    }
+
+    @Override
+    public Set<OrderDto> toOrdersDto(Set<Order> orders) {
+        Set<OrderDto> ordersDto = new HashSet<>();
+        orders.forEach(order -> ordersDto.add(toDto(order)));
+        return ordersDto;
+    }
+
+    private Set<ProductDto> getProductsDto(Set<ProductQueryDto> productsQueryDto){
+        Set<ProductDto> productsDto = new HashSet<>();
+        productsQueryDto.forEach(productQueryDto -> productsDto.add(ProductDto.builder()
+                                                                        .id(productQueryDto.getId())
+                                                                        .name(productQueryDto.getName())
+                                                                        .description(productQueryDto.getDescription())
+                                                                        .capacity(productQueryDto.getCapacity())
+                                                                        .amount(productQueryDto.getAmount()).build()
+                                                                        ));
+        return productsDto;
     }
 
     private BigDecimal getTotalPrice(Set<ProductDto> products){

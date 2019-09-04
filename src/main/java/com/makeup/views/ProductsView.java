@@ -7,14 +7,13 @@ import com.makeup.product.domain.dto.ProductDto;
 import com.makeup.utils.GlobalAuthorization;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.server.VaadinSession;
+import com.vaadin.shared.data.sort.SortDirection;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Set;
-
+import static com.makeup.views.message.ViewMessage.CAUSE.LOG_IN;
 import static com.makeup.views.message.ViewMessage.CAUSE.PRODUCT_BOUGHT;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -48,21 +47,25 @@ public class ProductsView extends Composite implements View {
     private void products(){
         validationField = new ValidationField();
         HorizontalLayout navigateButtonsLayout = new HorizontalLayout();
-        Grid<ProductDto> productsGrid = new Grid<>("All products in our shop:");
+        navigateButtonsLayout.setDefaultComponentAlignment(Alignment.BOTTOM_CENTER);
+        Grid<ProductDto> productsGrid = new Grid<>("All products in our shop. Select any and buy");
         productsGrid.setWidth("800");
         productsGrid.setItems(productFacade.findAllProducts());
-        productsGrid.addColumn(ProductDto::getName).setCaption("Name");
+        productsGrid.addColumn(ProductDto::getName).setCaption("Name").setId("name");
         productsGrid.addColumn(ProductDto::getDescription).setCaption("Description");
         productsGrid.addColumn(ProductDto::getCapacity).setCaption("Capacity");
         productsGrid.addColumn(ProductDto::getAmount).setCaption("Amount");
         productsGrid.addColumn(ProductDto::getPrice).setCaption("Price");
+        productsGrid.sort("name", SortDirection.ASCENDING);
 
         Button buyProductsButton = new Button("Buy");
-        TextField amountToBuyTextField = new TextField("Amount to buy");
+        TextField amountToBuyTextField = new TextField("Amount to buy:");
         Button returnButton = new Button("Return");
 
         buyProductsButton.addClickListener(clickEvent ->{
-            if (productsGrid.getSelectedItems().size() > 0 && !amountToBuyTextField.isEmpty()) {
+            if (!GlobalAuthorization.isAuthorized()){
+                Notification.show(LOG_IN.getMessage()).setDelayMsec(1500);
+            } else if (productsGrid.getSelectedItems().size() > 0 && !amountToBuyTextField.isEmpty()){
                 validationField.validateAmount(amountToBuyTextField, productsGrid);
                 CreateOrderDto createOrderDto = new CreateOrderDto(GlobalAuthorization.name, productsGrid.getSelectedItems());
                 createOrderDto.changeAmount(Integer.parseInt(amountToBuyTextField.getValue()));
@@ -78,16 +81,6 @@ public class ProductsView extends Composite implements View {
         navigateButtonsLayout.addComponents(amountToBuyTextField,buyProductsButton,returnButton);
         menuLayout.addComponents(productsGrid, navigateButtonsLayout);
         root.addComponent(menuLayout);
-    }
-
-
-
-    private void authorized(){
-
-    }
-
-    private void unauthorized(){
-
     }
 
     private void navigateTo(String navigateLayout){

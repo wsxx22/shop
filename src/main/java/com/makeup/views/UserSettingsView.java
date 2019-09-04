@@ -24,11 +24,9 @@ public class UserSettingsView extends Composite implements View {
 
     VerticalLayout root;
     VerticalLayout menuLayout;
-    RoleFacade roleFacade;
     UserFacade userFacade;
 
-    public UserSettingsView(RoleFacade roleFacade, UserFacade userFacade) {
-        this.roleFacade = roleFacade;
+    public UserSettingsView(UserFacade userFacade) {
         this.userFacade = userFacade;
     }
 
