@@ -18,4 +18,9 @@ class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     String name;
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

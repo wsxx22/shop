@@ -24,6 +24,10 @@ public class ProductFacade {
         return productService.findAllProducts();
     }
 
+    public void buyProduct(ProductDto productDto){
+        productService.buyProduct(productDto);
+    }
+
     public void update(ProductDto productDto){
         productService.update(productDto);
     }

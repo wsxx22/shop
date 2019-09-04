@@ -40,4 +40,15 @@ class Product {
     Set<Category> getCategories(){
         return new HashSet<>(categories);
     }
+
+    @Override
+    public String toString() {
+        return "id: " + id +
+                ", name :" + name + '\'' +
+                ", description: " + description + '\'' +
+                ", capacity: " + capacity +
+                ", price: " + price +
+                ", amount: " + amount +
+                ", categories: " + categories;
+    }
 }
