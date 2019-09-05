@@ -48,7 +48,7 @@ public class OrderHistoryView extends Composite implements View {
         ordersDto.setItems(orderFacade.findAllByLoggedUser());
         ordersDto.addColumn(orderDto -> orderDto.getProducts().iterator().next().getName()).setCaption("Products");
         ordersDto.addColumn(OrderDto::getTotalPrice).setCaption("Total price");
-        ordersDto.addColumn(orderDto -> orderDto.getOrderTime().format(DateTimeFormatter.ofPattern("dd:MM:yyyy HH:mm:ss"))).setCaption("Order time").setId("orderTime");
+        ordersDto.addColumn(orderDto -> orderDto.getOrderTime().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"))).setCaption("Order time").setId("orderTime");
         ordersDto.sort("orderTime", SortDirection.DESCENDING);
 
         Button returnButton = new Button("Return");

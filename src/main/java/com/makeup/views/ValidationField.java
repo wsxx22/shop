@@ -9,35 +9,32 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.stream.Stream;
 
-import static com.makeup.views.message.ViewMessage.CAUSE.AMOUNT_TO_BUY_RANGE;
-import static com.makeup.views.message.ViewMessage.CAUSE.COULD_NOT_BE_BLANK;
-import static com.makeup.views.message.ViewMessage.CAUSE.FIELD_MUST_BE_DIGIT;
-import static com.makeup.views.message.ViewMessage.CAUSE.FIELD_MUST_BE_INTEGER;
+import static com.makeup.views.message.ViewMessage.CAUSE.*;
 
 class ValidationField {
 
     void validFieldIsDouble(TextField... textFields){
         Stream.of(textFields).forEach(field -> {
-                    boolean dot = false;
-                    for(char c : field.getValue().toCharArray()){
-                        if (isDigit(c)) continue;
-                        if (c == '.'){
-                            if (!dot){
-                                dot=true;
-                                continue;
-                            }
-                        }
-                        throw new ViewMessage(String.format(FIELD_MUST_BE_DIGIT.getMessage(), field.getCaption()));
+            if (isDigit(field.getValue())){
+                throw new ViewMessage(String.format(FIELD_MUST_BE_DIGIT.getMessage(), field.getCaption()));
+            }
+            boolean dot = false;
+            for(char c : field.getValue().toCharArray()){
+                if (c == '.'){
+                    if (!dot){
+                        dot=true;
+                        continue;
                     }
-                });
+                }
+                throw new ViewMessage(String.format(FIELD_MUST_BE_DIGIT.getMessage(), field.getCaption()));
+            }
+        });
     }
 
     void validFieldIsInteger(TextField... textFields){
         Stream.of(textFields).forEach(field -> {
-            for(char c : field.getValue().toCharArray()) {
-                if (!isDigit(c)) {
-                    throw new ViewMessage(String.format(FIELD_MUST_BE_INTEGER.getMessage(), field.getCaption()));
-                }
+            if (!isDigit(field.getValue())){
+                throw new ViewMessage(String.format(NOT_BE_LESS_THAN_ZERO.getMessage(), field.getCaption()));
             }
         });
     }
@@ -63,16 +60,15 @@ class ValidationField {
         int amountToBuy = Integer.parseInt(amountToBuyTextField.getValue());
         int amountInStore = productsGrid.getSelectedItems().iterator().next().getAmount();
 
-        if (amountToBuy > amountInStore || amountToBuy < 0) {
+        if (amountToBuy == 0) {
+            throw new ViewMessage(AMOUNT_COULD_NOT_BE_ZERO.getMessage());
+        }
+        if (amountToBuy > amountInStore) {
             throw new ViewMessage(String.format(AMOUNT_TO_BUY_RANGE.getMessage(), amountInStore));
         }
     }
 
-    private boolean isDigit(char c) {
-        if (c == '0' | c == '1' | c == '2' | c == '3' | c == '4' | c == '5' | c == '6' | c == '7' | c == '8' | c == '9') {
-            return true;
-        }
-        return false;
+    private boolean isDigit(String value){
+        return StringUtils.isNumericSpace(value);
     }
-
 }

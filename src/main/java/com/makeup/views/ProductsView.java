@@ -59,9 +59,12 @@ public class ProductsView extends Composite implements View {
         productsGrid.sort("name", SortDirection.ASCENDING);
 
         Button buyProductsButton = new Button("Buy");
-        TextField amountToBuyTextField = new TextField("Amount to buy:");
+        buyProductsButton.setEnabled(false);
+
+        TextField amountToBuyTextField = new TextField("Amount to buy");
         Button returnButton = new Button("Return");
 
+        productsGrid.addSelectionListener(selectionEvent -> buyProductsButton.setEnabled(true));
         buyProductsButton.addClickListener(clickEvent ->{
             if (!GlobalAuthorization.isAuthorized()){
                 Notification.show(LOG_IN.getMessage()).setDelayMsec(1500);

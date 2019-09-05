@@ -1,15 +1,18 @@
 package com.makeup.views;
 
 import com.makeup.utils.GlobalAuthorization;
+import com.makeup.utils.ParameterizedException;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 
 import static com.makeup.utils.Constant.User.*;
+import static com.vaadin.ui.Notification.Type.WARNING_MESSAGE;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @SpringView(name = "homepage")
@@ -30,6 +33,8 @@ public class HomepageView extends Composite implements View {
         menuLayout = new VerticalLayout();
         menuLayout.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
         menuLayout.setWidth("350");
+        VaadinSession.getCurrent().setErrorHandler(errorEvent ->
+                Notification.show(ParameterizedException.exception, WARNING_MESSAGE));
     }
 
     private void checkAuthorize(){

@@ -37,10 +37,6 @@ class ProductValidator {
     private void validAmount(int value) {
         if (value < 0 || value > 1000)
             throw new InvalidProductException(INVALID_PRODUCT_AMOUNT);
-//        Optional.of(value)
-//                .filter(amount -> amount >= 0)
-//                .filter(amount -> amount < 1000)
-//                .orElseThrow(() -> new InvalidProductException(INVALID_PRODUCT_AMOUNT));
     }
 
     private void validName(String name){
@@ -49,11 +45,6 @@ class ProductValidator {
                     throw new InvalidProductException(PRODUCT_NAME_EXISTS);
                 });
         validLengthName(name);
-//        Stream.of(name)
-//                .filter(n -> n.length() > 0)
-//                .filter(n -> n.length() <= 30)
-//                .findFirst()
-//                .orElseThrow(() -> new InvalidProductException(INVALID_PRODUCT_NAME));
     }
 
     private void validLengthName(String name){
@@ -65,11 +56,6 @@ class ProductValidator {
     private void validCapacity(double capacity){
         if (capacity == 0.0 || capacity > 10.0)
             throw new InvalidProductException(INVALID_PRODUCT_CAPACITY);
-//        Stream.of(capacity)
-//                .filter(c -> c > 0.0)
-//                .filter(c -> c <= 10)
-//                .findFirst()
-//                .orElseThrow(() -> new InvalidProductException(INVALID_PRODUCT_CAPACITY));
     }
 
     private void validPrice(BigDecimal price){
@@ -83,9 +69,5 @@ class ProductValidator {
     private void validDescription(String description){
         if (description.length() > 200)
             throw new InvalidProductException(INVALID_PRODUCT_DESCRIPTION);
-//        Stream.of(description)
-//                .filter(p -> p.length() <= 200)
-//                .findFirst()
-//                .orElseThrow(() -> new InvalidProductException(INVALID_PRODUCT_DESCRIPTION));
     }
 }
