@@ -11,7 +11,7 @@
 
 ### Technologies
 <b>Back-end</b>
-* Java 8
+* Java 11
 * Maven
 * Spring (Boot, Data)
 * JPA
@@ -42,10 +42,10 @@ You can get a project from:
 ```
 git clone https://github.com/wsxx22/shop.git
 ```
-Run project and see my application on site: http://localhost:8080
+Run project and see my application on site: <a href="http://localhost:8080" target="_blank">http://localhost:8080</a>
 
 ### Database
-Database can be found at http://localhost:8080/console
+Database can be found at  <a href="http://localhost:8080/console" target="_blank">http://localhost:8080/console</a>
 
 <b>Driver Class:</b> org.h2.Driver<br/>
 <b>JDBC URL:</b> jdbc:h2:mem:shop_h2<br/>
@@ -56,7 +56,7 @@ Database can be found at http://localhost:8080/console
 
 <b>Username:</b> admin<br/>
 <b>Password:</b> admin<br/>
-<b>Role:</b> admin<br/><hr>
+<b>Role:</b> admin<hr width="150px">
 <b>Username:</b> user<br/>
 <b>Password:</b> user<br/>
 <b>Role:</b> user<br/>
