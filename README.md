@@ -10,6 +10,8 @@
 * [Trello](#trello)
 
 ### Technologies
+<p>I tried use modularity and hexagonal architecture.</p>
+
 <b>Back-end</b>
 * Java 11
 * Maven
@@ -42,10 +44,10 @@ You can get a project from:
 ```
 git clone https://github.com/wsxx22/shop.git
 ```
-Run project and see my application on site: <a href="http://localhost:8080" target="_blank">http://localhost:8080</a>
+Run project and see my application on site: http://localhost:8080
 
 ### Database
-Database can be found at  <a href="http://localhost:8080/console" target="_blank">http://localhost:8080/console</a>
+Database can be found at http://localhost:8080/console
 
 <b>Driver Class:</b> org.h2.Driver<br/>
 <b>JDBC URL:</b> jdbc:h2:mem:shop_h2<br/>
