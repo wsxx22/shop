@@ -21,4 +21,8 @@ public class RoleFacade {
     public Set<CreateRoleDto> findRoles(){
         return roleService.findRoles();
     }
+
+    public void addRole(CreateRoleDto createRoleDto) {
+        roleService.addRole(createRoleDto);
+    }
 }
