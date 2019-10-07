@@ -10,7 +10,8 @@ public class InvalidRoleException extends ParameterizedException {
     @AllArgsConstructor
     public enum CAUSE{
         ROLE_NOT_FOUND("Role not found."),
-        ROLE_COULD_NOT_CONVERTED("Could not converted");
+        ROLE_COULD_NOT_CONVERTED("Could not converted"),
+        ROLE_EXISTS("Role exists");
 
         String message;
     }

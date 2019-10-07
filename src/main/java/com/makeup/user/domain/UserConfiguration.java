@@ -25,7 +25,6 @@ class UserConfiguration {
                         new UserValidator(userRepository)));
     }
 
-
     UserFacade userFacade(ConcurrentHashMap<String, User> db) {
         MemoryUserRepository userRepository = new MemoryUserRepository(db);
 
@@ -35,14 +34,4 @@ class UserConfiguration {
                         new UserFactory(null),
                         new UserValidator(userRepository)));
     }
-
-//    UserFacade userFacade(ConcurrentHashMap<String, User> db, UserFactory userFactory) {
-//        MemoryUserRepository userRepository = new MemoryUserRepository(db);
-//
-//        return new UserFacade(
-//                new UserService(
-//                        userRepository,
-//                        userFactory,
-//                        new UserValidator(userRepository)));
-//    }
 }

@@ -1,9 +1,7 @@
 package com.makeup.role.domain;
 
 import com.makeup.user.domain.query.UserQueryDto;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -16,9 +14,12 @@ import java.util.Set;
 @Table(name = "roles")
 @DynamicInsert
 @DynamicUpdate
+@Builder
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@EqualsAndHashCode
 class Role {
 
     @Id
@@ -30,14 +31,4 @@ class Role {
     @Getter(AccessLevel.NONE)
     @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL)
     Set<UserQueryDto> users;
-
-//    void addUser(UserQueryDto userQueryDto){
-//        users.add(userQueryDto);
-//    }
-//
-//    Role(Long id, String role) {
-//        this.id = id;
-//        this.role = role;
-//        this.users = new HashSet<>();
-//    }
 }

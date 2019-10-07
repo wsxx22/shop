@@ -1,10 +1,7 @@
 package com.makeup.role.domain.query;
 
 import com.makeup.user.domain.query.UserQueryDto;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
