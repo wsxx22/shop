@@ -56,7 +56,6 @@ public class OrderHistoryView extends Composite implements View {
 
         menuLayout.addComponents(ordersDto, returnButton);
         root.addComponent(menuLayout);
-        // patch
     }
 
     @Override
